@@ -13,20 +13,30 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from 'next/image'
-import TaskFlowLogo from "/public/assets/taskflow-logo.svg"
-import GoogleLogo from "/public/assets/google-logo.svg"
+import Image from "next/image";
+import TaskFlowLogo from "/public/assets/taskflow-logo.svg";
+import Background from "/public/assets/3261396.jpg";
+import { FcGoogle } from "react-icons/fc";
 
 const SignupSchema = z.object({
   username: z.string().min(1, {
     message: "Username is required",
   }),
   email: z.string().email(),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters long",
-  }).refine(password => /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password), {
-    message: "Password needs uppercase, digit, and special character",
-  }),
+  password: z
+    .string()
+    .min(8, {
+      message: "Password must be at least 8 characters long",
+    })
+    .refine(
+      (password) =>
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+          password,
+        ),
+      {
+        message: "Password needs uppercase, digit, and special character",
+      },
+    ),
 });
 
 export type SignupFields = z.infer<typeof SignupSchema>;
@@ -41,29 +51,31 @@ const SignupPage = () => {
     },
   });
   const onSubmit = (data: SignupFields) => {
-    console.log('submitted data : ', JSON.stringify(data, null, 2));
+    console.log("submitted data : ", JSON.stringify(data, null, 2));
   };
 
   return (
-    <main className="flex min-h-screen text-white">
-      <div className="w-2/5 min-h-screen bg-richBlack flex flex-col justify-between p-6">
-        <div className="pt-6 py-14 pl-6">
-          <header className="flex items-center">
-            <Image src={TaskFlowLogo} alt="taskflow-logo" width={69} className="mr-4" />
-            <span className="font-bold  text-3xl">Task</span>
-            <span className="font-bold text-persianGreen text-3xl">Flow</span>
-          </header>
+    <main className="text-white bg-richBlack flex w-full min-h-screen overflow-auto">
+      <div className="w-1/3 max-lg:w-1/2 max-md:w-full">
+        <div className="flex items-center gap-x-2 p-5">
+          <Image src={TaskFlowLogo} alt="taskflow-logo" width={50} />
+          <div className="font-bold text-xl">
+            <span>Task</span>
+            <span className="text-persianGreen">Flow</span>
+          </div>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="px-12 flex flex-col items-center justify-center">
+          <div className="my-5 font-bold text-xl text-left">
+            <h1 className="font-bold text-xl text-left">
+              Unlock Your Productivity
+            </h1>
+            <h1 className="">Sign up now!</h1>
+          </div>
           <Form {...signupForm}>
             <form
               onSubmit={signupForm.handleSubmit(onSubmit)}
-              className="max-w-lg space-y-5"
+              className="space-y-5 w-full"
             >
-              <div className="text-3xl">
-                <h1>Unlock Your Productivity</h1>
-                <h1>Sign Up Now!</h1>
-              </div>
               <FormField
                 control={signupForm.control}
                 name="username"
@@ -136,15 +148,34 @@ const SignupPage = () => {
                 type="submit"
                 className="bg-white w-full flex gap-2 text-richBlack font-bold hover:bg-white"
               >
-                <Image src={GoogleLogo} alt='google-logo' width={20} />
+                <FcGoogle className="mr-2 h-4 w-4" />
                 Or sign up with google
               </Button>
-              <p className="text-center">Already have an account?<Link href="./foo" className="text-persianGreen font-bold ml-2">Log in</Link></p>
+              <div className="pb-4">
+                Already have an account?
+                <Link
+                  href="./login"
+                  className="text-persianGreen font-bold ml-2 underline"
+                >
+                  Log in
+                </Link>
+              </div>
             </form>
           </Form>
         </div>
       </div>
-      <div className="flex-grow bg-background-image">
+      <div
+        className="w-2/3 max-lg:w-1/2 max-md:hidden"
+        style={{ position: "relative" }}
+      >
+        <Image
+          alt="background-image"
+          src={Background}
+          fill
+          style={{
+            objectFit: "cover",
+          }}
+        />
       </div>
     </main>
   );
