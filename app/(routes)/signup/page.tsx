@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from 'next/image'
-import TaskFlowLogo from "../../public/assets/taskflow-logo.svg"
-import GoogleLogo from "../../public/assets/google-logo.svg"
+import TaskFlowLogo from "/public/assets/taskflow-logo.svg"
+import GoogleLogo from "/public/assets/google-logo.svg"
 
 const SignupSchema = z.object({
   username: z.string().min(1, {
