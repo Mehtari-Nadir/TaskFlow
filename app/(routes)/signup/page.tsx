@@ -7,7 +7,6 @@ import {
   FormField,
   FormItem,
 } from "@/components/ui/form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -17,29 +16,7 @@ import Image from "next/image";
 import TaskFlowLogo from "/public/assets/taskflow-logo.svg";
 import Background from "/public/assets/3261396.jpg";
 import { FcGoogle } from "react-icons/fc";
-
-const SignupSchema = z.object({
-  username: z.string().min(1, {
-    message: "Username is required",
-  }),
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters long",
-    })
-    .refine(
-      (password) =>
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-          password,
-        ),
-      {
-        message: "Password needs uppercase, digit, and special character",
-      },
-    ),
-});
-
-export type SignupFields = z.infer<typeof SignupSchema>;
+import { SignupSchema, SignupFields } from "./signupValidationSchema";
 
 const SignupPage = () => {
   const signupForm = useForm<SignupFields>({
@@ -59,17 +36,15 @@ const SignupPage = () => {
       <div className="w-1/3 max-lg:w-1/2 max-md:w-full">
         <div className="flex items-center gap-x-2 p-5">
           <Image src={TaskFlowLogo} alt="taskflow-logo" width={50} />
-          <div className="font-bold text-xl">
+          <div className="font-bold text-2xl">
             <span>Task</span>
             <span className="text-persianGreen">Flow</span>
           </div>
         </div>
         <div className="px-12 flex flex-col items-center justify-center">
-          <div className="my-5 font-bold text-xl text-left">
-            <h1 className="font-bold text-xl text-left">
-              Unlock Your Productivity
-            </h1>
-            <h1 className="">Sign up now!</h1>
+          <div className="my-5 font-bold text-2xl">
+            <h1 className="whitespace-nowrap">Unlock Your Productivity</h1>
+            <h1 className="whitespace-nowrap">Sign up now!</h1>
           </div>
           <Form {...signupForm}>
             <form

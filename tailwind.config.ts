@@ -19,11 +19,6 @@ const config = {
     },
     extend: {
       colors: {
-        richBlack: "#040D12",
-        white: "#FFFFFF",
-        persianGreen: "#00A9A5",
-        darkJungleGreen: "#092327",
-        eerieBlack: "#1E1E1E",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -57,6 +52,10 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        richBlack: "#040D12",
+        persianGreen: "#00A9A5",
+        darkJungleGreen: "#092327",
+        eerieBlack: "#1E1E1E",
       },
       borderRadius: {
         lg: "var(--radius)",
