@@ -1,8 +1,7 @@
 import Image from "next/image";
 
-import { ProfileAvata } from "./ProfileAvatar";
+import ProfileAvatar from "./ProfileAvatar";
 import NavbarMenu from "./NavbarMenu";
-import NavbarMenu_Small from "./NavbarMenu_Small";
 
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -24,7 +23,6 @@ const Navbar = () => {
                     <span className="text-c-one">Flow</span>
                 </span>
                 <NavbarMenu />
-                <NavbarMenu_Small />
                 <Button className="bg-c-one max-md:hidden" variant={"outline"}>Create Board</Button>
                 <Button size={"icon"} className="bg-c-one md:hidden" variant={"outline"}>
                     <FaPlus className="h-4 w-4" />
@@ -34,7 +32,7 @@ const Navbar = () => {
                 <Button variant={"outline"} size={"icon"}>
                     <FaSearch className="h-4 w-4" />
                 </Button>
-                <ProfileAvata image_url="https://github.com/shadcn.png" />
+                <ProfileAvatar image_url="https://github.com/shadcn.png" />
             </div>
         </nav>
     )

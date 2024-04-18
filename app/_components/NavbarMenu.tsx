@@ -1,13 +1,8 @@
 import {
     Menubar,
-    MenubarCheckboxItem,
     MenubarContent,
     MenubarItem,
     MenubarMenu,
-    MenubarRadioGroup,
-    MenubarRadioItem,
-    MenubarSeparator,
-    MenubarShortcut,
     MenubarSub,
     MenubarSubContent,
     MenubarSubTrigger,
@@ -17,50 +12,67 @@ import {
 
 const NavbarMenu = () => {
     return (
-        <Menubar className="max-lg:hidden">
-            <MenubarMenu>
-                <MenubarTrigger>Boards</MenubarTrigger>
-                <MenubarContent>
-                    <MenubarItem>
-                        Code
-                    </MenubarItem>
-                    <MenubarItem>
-                        Design
-                    </MenubarItem>
-                </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-                <MenubarTrigger>Recent</MenubarTrigger>
-                <MenubarContent>
-                    <MenubarItem>
-                        TaskFlow
-                    </MenubarItem>
-                    <MenubarItem>
-                        Code
-                    </MenubarItem>
-                    <MenubarItem>
-                        Atqin
-                    </MenubarItem>
-                </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-                <MenubarTrigger>Starred</MenubarTrigger>
-                <MenubarContent>
-                    <MenubarItem>
-                        TaskFlow
-                    </MenubarItem>
-                    <MenubarItem>
-                        Atqin
-                    </MenubarItem>
-                    <MenubarItem>
-                        stackinteck
-                    </MenubarItem>
-                    <MenubarItem>
-                        design
-                    </MenubarItem>
-                </MenubarContent>
-            </MenubarMenu>
-        </Menubar>
+        <>
+            <Menubar className="max-lg:hidden">
+                <MenubarMenu>
+                    <MenubarTrigger>Boards</MenubarTrigger>
+                    <MenubarContent>
+                        <MenubarItem>
+                            Code
+                        </MenubarItem>
+                        <MenubarItem>
+                            Design
+                        </MenubarItem>
+                    </MenubarContent>
+                </MenubarMenu>
+                <MenubarMenu>
+                    <MenubarTrigger>Recent</MenubarTrigger>
+                    <MenubarContent>
+                        <MenubarItem>
+                            Design
+                        </MenubarItem>
+                        <MenubarItem>
+                            Code
+                        </MenubarItem>
+                    </MenubarContent>
+                </MenubarMenu>
+                <MenubarMenu>
+                    <MenubarTrigger>Starred</MenubarTrigger>
+                    <MenubarContent>
+                        <MenubarItem>
+                            Code
+                        </MenubarItem>
+                    </MenubarContent>
+                </MenubarMenu>
+            </Menubar>
+            <Menubar className="lg:hidden">
+                <MenubarMenu>
+                    <MenubarTrigger>More</MenubarTrigger>
+                    <MenubarContent>
+                        <MenubarSub>
+                            <MenubarSubTrigger>Board</MenubarSubTrigger>
+                            <MenubarSubContent>
+                                <MenubarItem>Code</MenubarItem>
+                                <MenubarItem>Design</MenubarItem>
+                            </MenubarSubContent>
+                        </MenubarSub>
+                        <MenubarSub>
+                            <MenubarSubTrigger>Recent</MenubarSubTrigger>
+                            <MenubarSubContent>
+                                <MenubarItem>Design</MenubarItem>
+                                <MenubarItem>Code</MenubarItem>
+                            </MenubarSubContent>
+                        </MenubarSub>
+                        <MenubarSub>
+                            <MenubarSubTrigger>Starred</MenubarSubTrigger>
+                            <MenubarSubContent>
+                                <MenubarItem>Code</MenubarItem>
+                            </MenubarSubContent>
+                        </MenubarSub>
+                    </MenubarContent>
+                </MenubarMenu>
+            </Menubar>
+        </>
     );
 }
 
