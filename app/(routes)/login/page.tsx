@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 
-import { FcGoogle } from "react-icons/fc";
-
 import { z } from "zod";
 import formSchema from "./formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +19,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator"
-
+import { FcGoogle } from "react-icons/fc";
 
 const page = () => {
 

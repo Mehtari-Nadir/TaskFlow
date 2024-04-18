@@ -9,7 +9,6 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 
-
 const NavbarMenu = () => {
     return (
         <>

@@ -2,10 +2,9 @@ import Image from "next/image";
 
 import ProfileAvatar from "./ProfileAvatar";
 import NavbarMenu from "./NavbarMenu";
+import CreateBoardButton from "./CreateBoardButton";
 
 import { FaSearch } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
-
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -23,10 +22,7 @@ const Navbar = () => {
                     <span className="text-c-one">Flow</span>
                 </span>
                 <NavbarMenu />
-                <Button className="bg-c-one max-md:hidden" variant={"outline"}>Create Board</Button>
-                <Button size={"icon"} className="bg-c-one md:hidden" variant={"outline"}>
-                    <FaPlus className="h-4 w-4" />
-                </Button>
+                <CreateBoardButton />
             </div>
             <div className="flex items-center gap-x-5">
                 <Button variant={"outline"} size={"icon"}>
