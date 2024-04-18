@@ -21,14 +21,6 @@ const NavbarMenu_Small = () => {
                 <MenubarTrigger>More</MenubarTrigger>
                 <MenubarContent>
                     <MenubarSub>
-                        <MenubarSubTrigger>WorkSpace</MenubarSubTrigger>
-                        <MenubarSubContent>
-                            <MenubarItem>Stackinteck</MenubarItem>
-                            <MenubarItem>Atqin</MenubarItem>
-                            <MenubarItem>TaskFlow</MenubarItem>
-                        </MenubarSubContent>
-                    </MenubarSub>
-                    <MenubarSub>
                         <MenubarSubTrigger>Board</MenubarSubTrigger>
                         <MenubarSubContent>
                             <MenubarItem>Code</MenubarItem>

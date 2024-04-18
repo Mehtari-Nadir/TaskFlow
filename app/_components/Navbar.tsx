@@ -25,7 +25,7 @@ const Navbar = () => {
                 </span>
                 <NavbarMenu />
                 <NavbarMenu_Small />
-                <Button className="bg-c-one max-md:hidden" variant={"outline"}>Create Workspace</Button>
+                <Button className="bg-c-one max-md:hidden" variant={"outline"}>Create Board</Button>
                 <Button size={"icon"} className="bg-c-one md:hidden" variant={"outline"}>
                     <FaPlus className="h-4 w-4" />
                 </Button>

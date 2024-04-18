@@ -19,17 +19,6 @@ const NavbarMenu = () => {
     return (
         <Menubar className="max-lg:hidden">
             <MenubarMenu>
-                <MenubarTrigger>Workspaces</MenubarTrigger>
-                <MenubarContent>
-                    <MenubarItem>
-                        TaskFlow
-                    </MenubarItem>
-                    <MenubarItem>
-                        Atqin
-                    </MenubarItem>
-                </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
                 <MenubarTrigger>Boards</MenubarTrigger>
                 <MenubarContent>
                     <MenubarItem>
