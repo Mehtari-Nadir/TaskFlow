@@ -7,7 +7,6 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import {
     Form,
@@ -18,22 +17,18 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea"
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"
-import { useState } from "react";
 
 const createBoardFormSchema = z.object({
     boardName: z.string().min(2, { message: "2 chars in min" }).max(25, { message: "25 chars in max" }),
     boardDescription: z.string().max(100, { message: "25 chars in max" }).optional(),
 });
 
-const CreateBoardButton = () => {
-
-    const [open, setOpen] = useState(false);
+const CreateBoardButton = ({open, setOpen}: {open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
     const form = useForm<z.infer<typeof createBoardFormSchema>>({
         resolver: zodResolver(createBoardFormSchema),
@@ -53,14 +48,6 @@ const CreateBoardButton = () => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <div>
-                    <Button className="bg-c-one max-md:hidden" variant={"outline"}>Create Board</Button>
-                    <Button size={"icon"} className="bg-c-one md:hidden" variant={"outline"}>
-                        <PlusIcon className="h-4 w-4" />
-                    </Button>
-                </div>
-            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Let's build a Board</DialogTitle>
