@@ -79,9 +79,6 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-      backgroundImage: {
-        'background-image': "url('../public/assets/background.svg')",
-      }
     },
   },
   plugins: [require("tailwindcss-animate")],
