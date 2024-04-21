@@ -14,11 +14,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import TaskFlowLogo from "/public/assets/taskflow-logo.svg";
-import Background from "/public/assets/3261396.jpg";
+import Background from "/public/assets/auth-bg.jpg";
 import { FcGoogle } from "react-icons/fc";
 import { SignupSchema, SignupFields } from "./signupValidationSchema";
 
 const SignupPage = () => {
+
   const signupForm = useForm<SignupFields>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -32,7 +33,7 @@ const SignupPage = () => {
   };
 
   return (
-    <main className="text-white bg-richBlack flex w-full min-h-screen overflow-auto">
+    <main className="flex w-full min-h-screen overflow-auto">
       <div className="w-1/3 max-lg:w-1/2 max-md:w-full">
         <div className="flex items-center gap-x-2 p-5">
           <Image src={TaskFlowLogo} alt="taskflow-logo" width={50} />
@@ -43,8 +44,8 @@ const SignupPage = () => {
         </div>
         <div className="px-12 flex flex-col items-center justify-center">
           <div className="my-5 font-bold text-2xl">
-            <h1 className="whitespace-nowrap">Unlock Your Productivity</h1>
-            <h1 className="whitespace-nowrap">Sign up now!</h1>
+            <h1>Unlock Your Productivity</h1>
+            <h1>Sign up now!</h1>
           </div>
           <Form {...signupForm}>
             <form
@@ -59,7 +60,6 @@ const SignupPage = () => {
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-eerieBlack border-0"
                         placeholder="Enter username"
                         {...field}
                         type="username"
@@ -78,7 +78,6 @@ const SignupPage = () => {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-eerieBlack border-0 "
                         placeholder="example@gmail.com"
                         {...field}
                         type="email"
@@ -97,7 +96,6 @@ const SignupPage = () => {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-eerieBlack border-0"
                         placeholder="Enter password"
                         {...field}
                         type="password"
@@ -110,18 +108,18 @@ const SignupPage = () => {
               />
               <Button
                 type="submit"
-                className="bg-persianGreen w-full flex gap-2 text-richBlack font-bold hover:bg-white"
+                className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
               >
                 Sign up
               </Button>
-              <div className="flex items-center justify-center my-4">
-                <div className="flex-grow h-px bg-white mr-4"></div>
+              <div className="flex items-center justify-center my-2">
+                <div className="flex-grow h-px bg-black dark:bg-white mr-4"></div>
                 <span>or</span>
-                <div className="flex-grow h-px bg-white ml-4"></div>
+                <div className="flex-grow h-px bg-black dark:bg-white ml-4"></div>
               </div>
               <Button
                 type="submit"
-                className="bg-white w-full flex gap-2 text-richBlack font-bold hover:bg-white"
+                className="w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
               >
                 <FcGoogle className="mr-2 h-4 w-4" />
                 Or sign up with google
@@ -152,7 +150,7 @@ const SignupPage = () => {
           }}
         />
       </div>
-    </main>
+    </main >
   );
 };
 
