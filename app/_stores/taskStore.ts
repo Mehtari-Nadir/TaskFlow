@@ -1,28 +1,32 @@
 import { createStore } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 
-const defaultInitialState: TTask[] = [
-    {
-        taskId: "ttt-000",
-        taskTitle: "Impl design home page",
-        taskDescription: "bla bla bla",
-        columnId: "ccc-000"
-    },
-    {
-        taskId: "ttt-001",
-        taskTitle: "create zustand store",
-        taskDescription: "bla bla bla",
-        columnId: "ccc-000"
-    },
-    {
-        taskId: "ttt-002",
-        taskTitle: "fix bug",
-        taskDescription: "bla bla bla",
-        columnId: "ccc-002"
-    },
-];
+export const initTaskStore = (): TTask[] => {
+    return [
+        {
+            taskId: "ttt-000",
+            taskTitle: "Impl design home page",
+            taskDescription: "bla bla bla",
+            columnId: "ccc-000"
+        },
+        {
+            taskId: "ttt-001",
+            taskTitle: "create zustand store",
+            taskDescription: "bla bla bla",
+            columnId: "ccc-000"
+        },
+        {
+            taskId: "ttt-002",
+            taskTitle: "fix bug",
+            taskDescription: "bla bla bla",
+            columnId: "ccc-002"
+        },
+    ];
+}
 
-const useTaskStore = (
+const defaultInitialState: TTask[] = [];
+
+export const createTaskStore = (
     initState = defaultInitialState
 ) => {
     return createStore<TTaskStore>()((set) => {
@@ -42,6 +46,4 @@ const useTaskStore = (
             }
         );
     })
-}
-
-export default useTaskStore;
+};

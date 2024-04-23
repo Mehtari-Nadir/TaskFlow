@@ -2,7 +2,7 @@
 
 import { type ReactNode, createContext, useRef, useContext } from 'react'
 import { type StoreApi, useStore } from 'zustand'
-import { useBoardStore, initBoardStore } from '../_stores/boardStore';
+import { createBoardStore, initBoardStore } from '../_stores/boardStore';
 
 // ! If there is an error will be the type down here
 export const BoardStoreContext = createContext<StoreApi<TBoardStore> | null>(
@@ -19,7 +19,7 @@ export const BoardStoreProvider = ({
     const storeRef = useRef<StoreApi<TBoardStore>>()
     if (!storeRef.current) {
         // storeRef.current = useBoardStore(initBoardStore())
-        storeRef.current = useBoardStore(initBoardStore())
+        storeRef.current = createBoardStore(initBoardStore())
     }
 
     return (
@@ -29,13 +29,13 @@ export const BoardStoreProvider = ({
     )
 }
 
-export const useCounterStore = <T,>(
+export const useBoardStore = <T,>(
     selector: (store: TBoardStore) => T,
 ): T => {
     const boardStoreContext = useContext(BoardStoreContext)
 
     if (!boardStoreContext) {
-        throw new Error(`useCounterStore must be use within CounterStoreProvider`)
+        throw new Error(`useBoardStore must be use within BoardStoreProvider`)
     }
 
     return useStore(boardStoreContext, selector)
