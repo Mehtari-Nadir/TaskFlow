@@ -1,4 +1,6 @@
-const BoardCard = () => {
+import Link from "next/link";
+
+const BoardCard = ({boardId, boardTitle, boardDescription}: {boardId: string, boardTitle: string, boardDescription?: string}) => {
 
     // const colors = [
     //     "#2e3192, #0068c7, #009ce8, #00cff9, #1bffff",
@@ -11,7 +13,8 @@ const BoardCard = () => {
     // Math.floor(Math.random() * 5);
 
     return (
-        <div
+        <Link
+            href={`/home/board/${boardId}`}
             // style={{
             //     backgroundImage: `linear-gradient(to right top, ${colors[random]})`
             // }}
@@ -19,8 +22,8 @@ const BoardCard = () => {
                 backgroundImage: `linear-gradient(to right top, #764ba2, #7657b4, #7364c6, #6e71d8, #667eea`
             }}
             className="w-[250px] h-[130px] p-3 rounded-md">
-            board name
-        </div>
+            {boardTitle}
+        </Link  >
     );
 }
 

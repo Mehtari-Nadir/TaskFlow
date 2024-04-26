@@ -3,12 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 
 export const initBoardStore = (): TBoard[] => {
     return [
-        { boardId: "bbb-000", boardTitle: "Board One", boardDescription: "bla bla bla" },
-        { boardId: "bbb-000", boardTitle: "Board One", boardDescription: "bla bla bla" },
-        { boardId: "bbb-000", boardTitle: "Board One", boardDescription: "bla bla bla" },
-        { boardId: "bbb-000", boardTitle: "Board One", boardDescription: "bla bla bla" },
-        { boardId: "bbb-000", boardTitle: "Board One", boardDescription: "bla bla bla" },
-        { boardId: "bbb-000", boardTitle: "Board One", boardDescription: "bla bla bla" },
+        { boardId: "bbb-000", boardTitle: "TaskFlow code", boardDescription: "bla bla bla" },
+        { boardId: "bbb-001", boardTitle: "TaskFlow design", boardDescription: "bla bla bla" },
+        { boardId: "bbb-002", boardTitle: "Atqin", boardDescription: "bla bla bla" },
+        { boardId: "bbb-003", boardTitle: "Stackintech", boardDescription: "bla bla bla" },
+        { boardId: "bbb-004", boardTitle: "E-learn", boardDescription: "bla bla bla" },
+        { boardId: "bbb-005", boardTitle: "university", boardDescription: "bla bla bla" },
     ]
 }
 

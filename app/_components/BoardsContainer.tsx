@@ -10,9 +10,9 @@ const BoardsContainer = () => {
 
     return (
         <div className="flex items-center justify-start max-md:justify-center gap-3 flex-wrap p-10">
-            {boards.map((_, index) => {
+            {boards.map((board, index) => {
                 return (
-                    <BoardCard key={index} />
+                    <BoardCard key={index} {...board} />
                 );
             })}
             <CreateBoardBtn_home />
