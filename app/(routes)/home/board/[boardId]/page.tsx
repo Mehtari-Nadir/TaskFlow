@@ -1,8 +1,10 @@
+import BoardNavbar from "@/app/_components/BoardNavbar";
+
 const boardPage = ({params}: {params: {boardId: string}}) => {
     
     return (
         <main>
-            {params.boardId}
+            <BoardNavbar />
         </main>
     );
 }
