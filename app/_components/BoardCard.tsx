@@ -23,7 +23,7 @@ const BoardCard = ({boardId, boardTitle, boardDescription}: {boardId: string, bo
             }}
             className="w-[250px] h-[130px] p-3 rounded-md">
             {boardTitle}
-        </Link  >
+        </Link>
     );
 }
 
