@@ -1,5 +1,6 @@
 "use client"
 
+import StackedAvatars from "./StackedAvatars";
 import { Button } from "@/components/ui/button";
 import { Share1Icon, StarIcon, StarFilledIcon } from "@radix-ui/react-icons";
 import { useState, useMemo } from "react";
@@ -29,10 +30,13 @@ const BoardNavbar = ({ boardId }: { boardId: string }) => {
                     {!isFav && <StarIcon onClick={handleClick} className="h-6 w-6 cursor-pointer" color="gold" />}
                 </div>
             </div>
-            <Button variant={"outline"}>
-                <Share1Icon className="mr-2 h-4 w-4" />
-                Share
-            </Button>
+            <div className="flex items-center justify-center gap-x-2">
+                <StackedAvatars />
+                <Button variant={"outline"}>
+                    <Share1Icon className="mr-2 h-4 w-4" />
+                    Share
+                </Button>
+            </div>
         </nav>
     );
 }

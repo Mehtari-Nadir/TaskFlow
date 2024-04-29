@@ -9,11 +9,6 @@ export const initColumnStore = (): TColumn[] => {
             columnTitle: "TODO",
         },
         {
-            columnId: "ccc-001",
-            boardId: "bbb-000",
-            columnTitle: "DOING",
-        },
-        {
             columnId: "ccc-002",
             boardId: "bbb-000",
             columnTitle: "DONE",

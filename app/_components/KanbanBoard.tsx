@@ -21,7 +21,10 @@ const KanbanBoard = ({ boardId }: { boardId: string }) => {
                     );
                 })}
                 <AddColumnBtn />
-                <div className="clear-both p-3"></div>
+                <div
+                    id="fix-padding-with-overflow"
+                    className="clear-both p-3"
+                ></div>
             </div>
         </div>
     );
