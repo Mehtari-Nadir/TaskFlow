@@ -16,10 +16,12 @@ const Task = (
         taskTitle,
         taskId,
         taskDescription,
+        dueDate,
     }: {
         taskTitle: string,
         taskId: string,
         taskDescription?: string,
+        dueDate?: Date
     }) => {
 
     const [openTaskDialog, setTaskDialog] = useState(false);
@@ -40,7 +42,11 @@ const Task = (
                         <h3 className='truncate font-medium'>{taskTitle}</h3>
                         <div className="flex items-center justify-between">
                             <div className="flex gap-x-2">
-                                <Badge variant="outline" className="bg-yellow-500">Apr 9</Badge>
+                                {dueDate &&
+                                    <Badge variant="outline" className="bg-yellow-500">
+                                        {dueDate.getDate() + " " + dueDate.toLocaleString('default', { month: 'long' })}
+                                    </Badge>
+                                }
                                 <Badge variant="outline" className="bg-red-500">High priority</Badge>
                             </div>
                             <StackedAvatars />

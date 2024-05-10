@@ -15,10 +15,11 @@ type TTask = {
     columnId: string;
     taskTitle: string;
     taskDescription?: string;
+    dueDate?: Date;
 }
 
 type TTaskActions = {
-    addTask: (columnId: string, taskTitle: string, taskDescription?: string) => void;
+    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date) => void;
     deleteTask: (taskId: string) => void;
     editTask: (taskId: string, taskTitle: string, taskDescription?: string) => void;
 }

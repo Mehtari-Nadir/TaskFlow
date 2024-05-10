@@ -33,9 +33,9 @@ export const createTaskStore = (
         return (
             {
                 tasks: [...initState],
-                addTask: (columnId: string, taskTitle: string, taskDescription?: string) => {
+                addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date) => {
                     set((state) => ({
-                        tasks: [...state.tasks, { taskId: uuidv4(), taskTitle, taskDescription, columnId }]
+                        tasks: [...state.tasks, { taskId: uuidv4(), taskTitle, taskDescription, columnId, dueDate }]
                     }));
                 },
                 deleteTask: (taskId: string) => {
@@ -43,10 +43,10 @@ export const createTaskStore = (
                         tasks: state.tasks.filter(task => task.taskId !== taskId)
                     }));
                 },
-                editTask: (taskId: string, taskTitle: string, taskDescription?: string) => {
+                editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date) => {
                     set(state => ({
                         tasks: state.tasks.map((task) => {
-                            return task.taskId == taskId ? {...task, taskTitle, taskDescription} : task;
+                            return task.taskId == taskId ? {...task, taskTitle, taskDescription, dueDate} : task;
                         })
                     }));
                 }
