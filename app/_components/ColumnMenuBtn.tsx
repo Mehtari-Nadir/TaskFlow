@@ -7,12 +7,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import Add_EditColumnDialog from "./Add_EditColumnDialog";
+import EditColumnDialog from "./EditColumnDialog";
 import { useState } from "react";
+import AddTaskDialog from "./AddTaskDialog";
+import { toast } from "sonner";
+import { useColumnStore } from "../_providers/column-store-provider";
 
-const ColumnMenuBtn = ({columnId, columnTitle}: {columnId: string, columnTitle: string}) => {
+const ColumnMenuBtn = ({ columnId, columnTitle }: { columnId: string, columnTitle: string }) => {
 
-    const [open, setOpen] = useState(false);
+    const [openColumnDialog, setColumnDialog] = useState(false);
+    const [openTaskDialog, setTaskDialog] = useState(false);
+
+    const deleteColumn = useColumnStore(actions => actions.deleteColumn);
 
     return (
         <>
@@ -23,15 +29,42 @@ const ColumnMenuBtn = ({columnId, columnTitle}: {columnId: string, columnTitle: 
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem>Add Task</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => { setTaskDialog(true) }}>
+                        Add Task
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => {setOpen(true)}}>
+                    <DropdownMenuItem onClick={() => { setColumnDialog(true) }}>
                         Edit Column
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Delete Column</DropdownMenuItem>
+                    <DropdownMenuItem
+                        className="text-red-500"
+                        onClick={() => {
+                            toast.warning("Dlete This column??", {
+                                description: "All tasks in this column will be deleted.",
+                                action: {
+                                    label: "Delete",
+                                    onClick: () => {
+                                        deleteColumn(columnId);
+                                    }
+                                },
+                            })
+                        }}
+                    >
+                        Delete Column
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            <Add_EditColumnDialog open={open} setOpen={setOpen} defaultValue={columnTitle} />
+            <EditColumnDialog
+                openColumnDialog={openColumnDialog}
+                setColumnDialog={setColumnDialog}
+                columnId={columnId}
+                columnTitle={columnTitle}
+            />
+            <AddTaskDialog
+                columnId={columnId}
+                openTaskDialog={openTaskDialog}
+                setTaskDialog={setTaskDialog}
+            />
         </>
     );
 }

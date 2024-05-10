@@ -2,21 +2,16 @@
 
 import StackedAvatars from "./StackedAvatars";
 import { Button } from "@/components/ui/button";
-import { Share1Icon, StarIcon, StarFilledIcon } from "@radix-ui/react-icons";
-import { useState, useMemo } from "react";
+import { Share1Icon } from "@radix-ui/react-icons";
+import { useMemo } from "react";
 import { useBoardStore } from "../_providers/board-store-provider";
+import { RiSparklingFill } from "react-icons/ri";
 
 const BoardNavbar = ({ boardId }: { boardId: string }) => {
 
-    const [isFav, setFav] = useState(false);
-
-    const handleClick = () => {
-        setFav(!isFav);
-    }
-
     const boards = useBoardStore(state => state.boards);
     const filtredBoard = useMemo(() => {
-        return boards.filter(board => board.boardId === boardId);
+        return boards.filter(board => board.boardId == boardId);
     }, [boardId]);
 
     return (
@@ -25,13 +20,12 @@ const BoardNavbar = ({ boardId }: { boardId: string }) => {
         >
             <div className="flex items-center justify-center gap-x-3">
                 <h1 className="font-bold text-2xl">{filtredBoard[0].boardTitle}</h1>
-                <div>
-                    {isFav && <StarFilledIcon onClick={handleClick} className="h-6 w-6 cursor-pointer" color="gold" />}
-                    {!isFav && <StarIcon onClick={handleClick} className="h-6 w-6 cursor-pointer" color="gold" />}
-                </div>
             </div>
             <div className="flex items-center justify-center gap-x-2">
                 <StackedAvatars />
+                <Button size={"icon"} variant={"outline"}>
+                    <RiSparklingFill size={20} color="gold" />
+                </Button>
                 <Button variant={"outline"}>
                     <Share1Icon className="mr-2 h-4 w-4" />
                     Share

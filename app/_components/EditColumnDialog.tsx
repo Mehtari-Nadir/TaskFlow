@@ -1,10 +1,6 @@
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,42 +18,46 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
+import { useColumnStore } from "../_providers/column-store-provider"
+
 const createColumnSchema = z.object({
     columnTitle: z.string().min(2, { message: "minimum 2 chars" }).max(20, { message: "maximum 20 chars" }),
 })
 
-const Add_EditColumnDialog = (
+const EditColumnDialog = (
     {
-        open,
-        setOpen,
-        isEdit,
-        defaultValue = "",
+        openColumnDialog,
+        setColumnDialog,
+        columnId,
+        columnTitle,
     }: {
-        open: boolean,
-        setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-        isEdit?: boolean,
-        defaultValue?: string
+        openColumnDialog: boolean,
+        setColumnDialog: React.Dispatch<React.SetStateAction<boolean>>,
+        columnId: string,
+        columnTitle: string,
     }
 ) => {
+
+    const editColumn = useColumnStore(actions => actions.editColumn);
 
     const form = useForm<z.infer<typeof createColumnSchema>>({
         resolver: zodResolver(createColumnSchema),
         defaultValues: {
-            columnTitle: defaultValue,
+            columnTitle: columnTitle,
         },
     })
 
     function onSubmit(values: z.infer<typeof createColumnSchema>) {
+        editColumn(columnId, values.columnTitle);
         form.reset();
-        setOpen(false);
-        console.log(values)
+        setColumnDialog(false);
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={openColumnDialog} onOpenChange={setColumnDialog}>
             <DialogContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                             control={form.control}
                             name="columnTitle"
@@ -65,14 +65,14 @@ const Add_EditColumnDialog = (
                                 <FormItem>
                                     <FormLabel>Column Title</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="shadcn" {...field} />
+                                        <Input placeholder="in progress, done..." {...field} />
                                     </FormControl>
+                                    <FormDescription>Choosing effective column titles</FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        {defaultValue && <Button type="submit">Save</Button>}
-                        {!defaultValue && <Button type="submit">Add</Button>}
+                        <Button type="submit">Add Column</Button>
                     </form>
                 </Form>
             </DialogContent>
@@ -80,4 +80,4 @@ const Add_EditColumnDialog = (
     )
 }
 
-export default Add_EditColumnDialog;
+export default EditColumnDialog;

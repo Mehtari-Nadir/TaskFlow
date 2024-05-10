@@ -4,14 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 export const initColumnStore = (): TColumn[] => {
     return [
         {
-            columnId: "ccc-000",
+            columnId: "ccc-001",
             boardId: "bbb-000",
-            columnTitle: "TODO",
+            columnTitle: "In Progress",
         },
         {
-            columnId: "ccc-002",
+            columnId: "ccc-000",
             boardId: "bbb-000",
-            columnTitle: "DONE",
+            columnTitle: "Review",
         },
     ];
 }
@@ -25,6 +25,7 @@ export const createColumnStore = (
         return (
             {
                 columns: [...initState],
+                draggedColumn: null,
                 addColumn: (boardId: string, columnTitle: string) => {
                     set((state) => ({
                         columns: [...state.columns, { boardId, columnTitle, columnId: uuidv4() }],
@@ -33,6 +34,18 @@ export const createColumnStore = (
                 deleteColumn: (columnId: string) => {
                     set((state) => ({
                         columns: state.columns.filter(column => column.columnId !== columnId),
+                    }));
+                },
+                editColumn: (columnId: string, columnTitle: string) => {
+                    set(state => ({
+                        columns: state.columns.map(column => {
+                            return column.columnId == columnId ? { ...column, columnTitle } : column;
+                        })
+                    }))
+                },
+                dragColumn: (columnId: string | null) => {
+                    set(() => ({
+                        draggedColumn: columnId,
                     }));
                 }
             }

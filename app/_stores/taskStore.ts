@@ -42,6 +42,13 @@ export const createTaskStore = (
                     set((state) => ({
                         tasks: state.tasks.filter(task => task.taskId !== taskId)
                     }));
+                },
+                editTask: (taskId: string, taskTitle: string, taskDescription?: string) => {
+                    set(state => ({
+                        tasks: state.tasks.map((task) => {
+                            return task.taskId == taskId ? {...task, taskTitle, taskDescription} : task;
+                        })
+                    }));
                 }
             }
         );
