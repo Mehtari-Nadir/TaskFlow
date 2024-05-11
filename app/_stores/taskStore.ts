@@ -43,10 +43,10 @@ export const createTaskStore = (
                         tasks: state.tasks.filter(task => task.taskId !== taskId)
                     }));
                 },
-                editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date) => {
+                editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => {
                     set(state => ({
                         tasks: state.tasks.map((task) => {
-                            return task.taskId == taskId ? {...task, taskTitle, taskDescription, dueDate} : task;
+                            return task.taskId == taskId ? {...task, taskTitle, taskDescription, dueDate, priority} : task;
                         })
                     }));
                 }

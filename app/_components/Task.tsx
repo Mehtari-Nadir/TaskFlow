@@ -36,9 +36,9 @@ const Task = (
     const deleteTask = useTaskStore(actions => actions.deleteTask);
     
     const PriorityColors: { [key in Priority]: string } = {
-        [Priority.High]: '#FF0000', // Orange
-        [Priority.Medium]: '#33CC33', // Yellow
-        [Priority.Low]: '#FF9900', // Green
+        [Priority.High]: '#FF0000', // Red
+        [Priority.Medium]: '#FF9900', // Orange
+        [Priority.Low]: '#33CC33', // Green
     };
 
     return (
@@ -90,8 +90,6 @@ const Task = (
             <EditTaskDialog
                 openTaskDialog={openTaskDialog}
                 setTaskDialog={setTaskDialog}
-                taskTitle={taskTitle}
-                taskDescription={taskDescription}
                 taskId={taskId}
             />
         </ContextMenu>

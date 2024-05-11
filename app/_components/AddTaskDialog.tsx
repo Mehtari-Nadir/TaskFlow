@@ -74,7 +74,6 @@ const AddTaskDialog = (
 
     function onSubmit(values: z.infer<typeof createTaskSchema>) {
         addTask(columnId, values.taskTitle, values.taskDescription, values.dueDate, values.priority);
-        console.log(values.priority);
         form.reset();
         setTaskDialog(false);
     }

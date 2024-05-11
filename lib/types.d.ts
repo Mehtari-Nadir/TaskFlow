@@ -28,7 +28,7 @@ type TTask = {
 type TTaskActions = {
     addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
     deleteTask: (taskId: string) => void;
-    editTask: (taskId: string, taskTitle: string, taskDescription?: string) => void;
+    editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
 }
 
 type TColumnActions = {
