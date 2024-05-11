@@ -33,9 +33,9 @@ export const createTaskStore = (
         return (
             {
                 tasks: [...initState],
-                addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date) => {
+                addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => {
                     set((state) => ({
-                        tasks: [...state.tasks, { taskId: uuidv4(), taskTitle, taskDescription, columnId, dueDate }]
+                        tasks: [...state.tasks, { taskId: uuidv4(), taskTitle, taskDescription, columnId, dueDate, priority }]
                     }));
                 },
                 deleteTask: (taskId: string) => {

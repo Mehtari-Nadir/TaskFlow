@@ -1,3 +1,9 @@
+enum Priority {
+    High = 'High',
+    Medium = 'Medium',
+    Low = 'Low',
+}
+
 type TBoard = {
     boardId: string;
     boardTitle: string;
@@ -16,10 +22,11 @@ type TTask = {
     taskTitle: string;
     taskDescription?: string;
     dueDate?: Date;
+    priority?: Priority;
 }
 
 type TTaskActions = {
-    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date) => void;
+    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
     deleteTask: (taskId: string) => void;
     editTask: (taskId: string, taskTitle: string, taskDescription?: string) => void;
 }

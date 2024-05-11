@@ -16,6 +16,13 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
@@ -30,10 +37,17 @@ import { format } from "date-fns";
 
 import { useTaskStore } from "../_providers/task-store-provider";
 
+enum Priority {
+    High = 'High',
+    Medium = 'Medium',
+    Low = 'Low',
+};
+
 const createTaskSchema = z.object({
     taskTitle: z.string().min(2, { message: "minimum 2 chars" }).max(64, { message: "maximum 64 chars" }),
     taskDescription: z.string().max(255, { message: "minimum 255 chars" }).optional(),
     dueDate: z.date().optional(),
+    priority: z.nativeEnum(Priority).optional(),
 })
 
 const AddTaskDialog = (
@@ -59,7 +73,8 @@ const AddTaskDialog = (
     })
 
     function onSubmit(values: z.infer<typeof createTaskSchema>) {
-        addTask(columnId, values.taskTitle, values.taskDescription, values.dueDate);
+        addTask(columnId, values.taskTitle, values.taskDescription, values.dueDate, values.priority);
+        console.log(values.priority);
         form.reset();
         setTaskDialog(false);
     }
@@ -135,6 +150,29 @@ const AddTaskDialog = (
                                         </PopoverContent>
                                     </Popover>
                                     <FormDescription>Set Realistic Deadline</FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="priority"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Select Priority</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Priorities" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value={Priority.High}>High</SelectItem>
+                                            <SelectItem value={Priority.Medium}>Medium</SelectItem>
+                                            <SelectItem value={Priority.Low}>Low</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {/* <FormDescription>Keep Descriptions Brief</FormDescription> */}
                                     <FormMessage />
                                 </FormItem>
                             )}

@@ -11,21 +11,35 @@ import EditTaskDialog from "./EditTaskDialog";
 import { toast } from "sonner";
 import { useTaskStore } from "../_providers/task-store-provider";
 
+enum Priority {
+    High = 'High',
+    Medium = 'Medium',
+    Low = 'Low',
+};
+
 const Task = (
     {
         taskTitle,
         taskId,
         taskDescription,
         dueDate,
+        priority,
     }: {
         taskTitle: string,
         taskId: string,
         taskDescription?: string,
-        dueDate?: Date
+        dueDate?: Date,
+        priority?: Priority
     }) => {
 
     const [openTaskDialog, setTaskDialog] = useState(false);
     const deleteTask = useTaskStore(actions => actions.deleteTask);
+    
+    const PriorityColors: { [key in Priority]: string } = {
+        [Priority.High]: '#FF0000', // Orange
+        [Priority.Medium]: '#33CC33', // Yellow
+        [Priority.Low]: '#FF9900', // Green
+    };
 
     return (
         <ContextMenu>
@@ -47,7 +61,7 @@ const Task = (
                                         {dueDate.getDate() + " " + dueDate.toLocaleString('default', { month: 'long' })}
                                     </Badge>
                                 }
-                                <Badge variant="outline" className="bg-red-500">High priority</Badge>
+                                {priority && <Badge style={{backgroundColor: PriorityColors[priority]}}>{priority}</Badge>}
                             </div>
                             <StackedAvatars />
                         </div>
