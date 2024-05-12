@@ -17,7 +17,7 @@ const KanbanBoard = ({ boardId }: { boardId: string }) => {
     }, [columns, boardId]);
 
     return (
-        <div className="overflow-x-auto w-full">
+        <div className="overflow-x-auto w-full h-full">
             <div className="flex gap-5 p-5 w-full">
                 {filtredColumns.map((column, index) => {
                     return (

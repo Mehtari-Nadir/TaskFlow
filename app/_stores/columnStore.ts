@@ -2,18 +2,7 @@ import { createStore } from "zustand";
 import { v4 as uuidv4 } from 'uuid';
 
 export const initColumnStore = (): TColumn[] => {
-    return [
-        {
-            columnId: "ccc-001",
-            boardId: "bbb-000",
-            columnTitle: "In Progress",
-        },
-        {
-            columnId: "ccc-000",
-            boardId: "bbb-000",
-            columnTitle: "Review",
-        },
-    ];
+    return [];
 }
 
 const defaultInitialState: TColumn[] = [];

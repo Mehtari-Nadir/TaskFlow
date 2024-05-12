@@ -57,7 +57,7 @@ const Task = (
                         <div className="flex items-center justify-between">
                             <div className="flex gap-x-2">
                                 {dueDate &&
-                                    <Badge variant="outline" className="bg-yellow-500">
+                                    <Badge variant="default">
                                         {dueDate.getDate() + " " + dueDate.toLocaleString('default', { month: 'long' })}
                                     </Badge>
                                 }
