@@ -30,20 +30,33 @@ const createBoardFormSchema = z.object({
     boardDescription: z.string().max(255, { message: "maximum 255 characters" }).optional(),
 });
 
-const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
-
-    const addBoard = useBoardStore(actions => actions.addBoard);
+const EditBoardDialog = (
+    {
+        open,
+        setOpen,
+        boardId,
+        boardName,
+        boardDescription
+    }: {
+        open: boolean,
+        setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+        boardId: string,
+        boardName: string,
+        boardDescription?: string
+    }) => {
+        
+    const editBoard = useBoardStore(actions => actions.editBoard);
 
     const form = useForm<z.infer<typeof createBoardFormSchema>>({
         resolver: zodResolver(createBoardFormSchema),
         defaultValues: {
-            boardName: "",
-            boardDescription: ""
+            boardName: boardName,
+            boardDescription: boardDescription
         },
     })
 
     function onSubmit(values: z.infer<typeof createBoardFormSchema>) {
-        addBoard(values.boardName, values.boardDescription);
+        editBoard(boardId, values.boardName, values.boardDescription);
         form.reset();
         setOpen(false);
     }
@@ -96,4 +109,4 @@ const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Di
     )
 }
 
-export default CreateBoardButton;
+export default EditBoardDialog;
