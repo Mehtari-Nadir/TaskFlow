@@ -86,7 +86,7 @@ const LoginPage = () => {
                                             <Input placeholder="**********" {...field} />
                                         </FormControl>
                                         <FormDescription
-                                            className="text-right text-c-one underline cursor-pointer"
+                                            className="text-right font-bold text-c-one underline cursor-pointer"
                                         >
                                             Forget Password?
                                         </FormDescription>
