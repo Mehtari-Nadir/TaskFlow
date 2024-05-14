@@ -1,9 +1,8 @@
 import { ModeToggle } from "../Toggle";
-import { Separator } from "@/components/ui/separator";
 
 const SettingsHeader = () => (
   <header>
-    <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-4 sm:py-8 lg:px-6">
+    <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-4 sm:py-6 lg:px-6">
       <div className="sm:flex sm:items-center sm:justify-between">
         <div className="text-center sm:text-left">
           <div>
@@ -20,7 +19,7 @@ const SettingsHeader = () => (
         </div>
       </div>
     </div>
-    <Separator />
+    <hr className="h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400" />
   </header>
 );
 
