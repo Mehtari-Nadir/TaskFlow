@@ -12,14 +12,14 @@ const BoardNavbar = ({ boardId }: { boardId: string }) => {
     const boards = useBoardStore(state => state.boards);
     const filtredBoard = useMemo(() => {
         return boards.filter(board => board.boardId == boardId);
-    }, [boardId]);
+    }, [boardId, boards]);
 
     return (
         <nav
-            className="w-full bg-[#092327] flex items-center justify-between py-2 px-5 border-b-[1px]"
+            className="w-full bg-[#092327] flex items-center justify-between py-4 px-5 border-b-[1px]"
         >
             <div className="flex items-center justify-center gap-x-3">
-                <h1 className="font-bold text-2xl">{filtredBoard[0].boardTitle}</h1>
+                <h1 className="text-white font-bold text-2xl">{filtredBoard[0].boardTitle}</h1>
             </div>
             <div className="flex items-center justify-center gap-x-2">
                 <StackedAvatars />
