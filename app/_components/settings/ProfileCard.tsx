@@ -3,11 +3,11 @@ import ProfileImage from "./ProfileImage";
 type ProfileCardProps = {
   username: string;
   email: string;
+  profileImage?: string;
 };
-
-const ProfileCard = ({ username, email }: ProfileCardProps) => (
+const ProfileCard = ({ username, email, profileImage }: ProfileCardProps) => (
   <div className="flex flex-col justify-center items-center gap-2 ">
-    <ProfileImage />
+    <ProfileImage profileImage={profileImage} />
     <div className="text-center">
       <h2 className="text-gray-800 dark:text-white text-3xl font-bold">
         {`@${username}`}
