@@ -25,7 +25,7 @@ const ColumnMenuBtn = ({ columnId, columnTitle }: { columnId: string, columnTitl
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant={"outline"} size={'icon'}>
-                        <DotsVerticalIcon className="h-4 w-4" />
+                        <DotsVerticalIcon className="h-4 w-4 text-black dark:text-white" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

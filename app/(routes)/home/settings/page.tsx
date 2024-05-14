@@ -39,6 +39,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useEffect } from "react";
+import Lenis from "lenis";
 
 const Settings = () => {
   const usernameForm = useForm<UsernameField>({
@@ -64,28 +66,42 @@ const Settings = () => {
   });
 
   // TODO: Implement functionality for handling username changes
-  const handleUsernameChange = (data: UsernameField) => {
-    console.log(data);
+  const handleUsernameChange = ({ username }: UsernameField) => {
+    console.log(username);
   };
 
   // TODO: Implement functionality for handling email changes
-  const handleEmailChange = (data: EmailField) => {
-    console.log(data);
+  const handleEmailChange = ({ email }: EmailField) => {
+    console.log(email);
   };
 
   // TODO: Implement functionality for handling password changes
-  const handlePasswordChange = (data: PasswordField) => {
-    console.log(data);
+  const handlePasswordChange = ({ newPassword }: PasswordField) => {
+    console.log(newPassword);
   };
   // TODO: Implement functionality for handling account deletion
   const handleAccountDelete = () => {
     window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
   };
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
       <SettingsHeader />
-      <ProfileCard username="some_dummy_text" email="info@taskflow.com" />
+      <ProfileCard
+        username="some_dummy_text"
+        email="info@taskflow.com"
+        profileImage="/assets/default-avatar.svg"
+      />
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6">
           <div className="grid gap-6">
@@ -247,7 +263,7 @@ const Settings = () => {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className="px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-black">
+                      <AlertDialogCancel className="px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen">
                         Cancel
                       </AlertDialogCancel>
                       <AlertDialogAction

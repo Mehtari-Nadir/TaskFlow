@@ -12,7 +12,7 @@ const Column = ({ columnId, columnTitle }: { columnId: string, columnTitle: stri
 
     return (
         <div
-            className="flex-none w-[300px] max-h-[450px] bg-c-three p-3 rounded-lg">
+            className="flex-none w-[300px] max-h-[450px] bg-c-three p-3 rounded-lg text-white">
             <div
                 className="flex items-center justify-between mb-3"
             >

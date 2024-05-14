@@ -52,7 +52,7 @@ const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Di
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Let's build a Board</DialogTitle>
+                    <DialogTitle>Let&apos;s build a Board</DialogTitle>
                     <DialogDescription>
                         Enhance Team Efficiency: Centralize Board Access for Seamless Collaboration!
                     </DialogDescription>
@@ -88,7 +88,7 @@ const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Di
                                 </FormItem>
                             )}
                         />
-                        <Button className="bg-c-one" variant={"outline"} type="submit">Create</Button>
+                        <Button className="px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen" variant={"outline"} type="submit">Create</Button>
                     </form>
                 </Form>
             </DialogContent>

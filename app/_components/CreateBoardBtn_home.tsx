@@ -12,7 +12,7 @@ const CreateBoardBtn_home = () => {
         <>
             <div
                 onClick={() => setOpen(true)}
-                className="w-[250px] h-[130px] cursor-pointer bg-c-three flex items-center justify-center gap-x-1 rounded-md">
+                className="text-white w-[250px] h-[130px] cursor-pointer bg-c-three flex items-center justify-center gap-x-1 rounded-md">
                 <PlusCircledIcon className="h-4 w-4" />
                 Create Board
             </div>

@@ -14,6 +14,7 @@ export const createBoardStore = (
         return (
             {
                 boards: [...initState],
+                searchTerm: '',
                 addBoard: (boardTitle: string, boardDescription?: string) => {
                     set((state) => ({
                         boards: [...state.boards, { boardId: uuidv4(), boardTitle, boardDescription, isStarred: false }]
@@ -30,7 +31,12 @@ export const createBoardStore = (
                             return board.boardId == boardId ? {...board, boardTitle, boardDescription} : board;
                         })
                     }));
-                }
+                },
+                setSearchTerm: (term: string) => {
+                    set( ({
+                        searchTerm: term
+                    }))
+                },
             }
         );
     });

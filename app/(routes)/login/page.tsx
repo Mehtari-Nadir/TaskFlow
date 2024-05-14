@@ -20,8 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator"
 import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
 
-const page = () => {
+const LoginPage = () => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -39,22 +40,24 @@ const page = () => {
     }
 
     return (
-        <main className="text-white bg-c-two flex w-full h-screen">
+        <main className="flex w-full h-screen">
             <div className="h-screen w-1/3 max-lg:w-1/2 max-md:w-full">
-                <div className="flex items-center gap-x-2  p-5">
-                    <Image
-                        alt="logo"
-                        src={"/assets/logo.svg"}
-                        width={50}
-                        height={50}
-                    />
-                    <div className="font-bold text-xl">
-                        <span>Task<span className="text-c-one">Flow</span></span>
+                <Link href="./">
+                    <div className="flex items-center gap-x-2 p-5 transition-all duration-300 hover:scale-105">
+                        <Image
+                            alt="logo"
+                            src={"/assets/taskflow-logo.svg"}
+                            width={50}
+                            height={50}
+                        />
+                        <div className="font-bold text-xl">
+                            <span>Task<span className="text-c-one">Flow</span></span>
+                        </div>
                     </div>
-                </div>
+                </Link>
                 <div className="px-12 flex flex-col items-center justify-center">
                     <h1
-                        className=" my-5 font-bold text-xl text-center"
+                        className=" my-5 font-bold text-xl text-center text-balance"
                     >
                         Welcome Back! Log In to Supercharge Your Productivity!
                     </h1>
@@ -67,7 +70,7 @@ const page = () => {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="example@gmale.com" {...field} />
+                                            <Input placeholder="example@gmail.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -83,7 +86,7 @@ const page = () => {
                                             <Input placeholder="**********" {...field} />
                                         </FormControl>
                                         <FormDescription
-                                            className="text-right text-c-one underline cursor-pointer"
+                                            className="text-right font-bold text-c-one underline cursor-pointer"
                                         >
                                             Forget Password?
                                         </FormDescription>
@@ -92,21 +95,28 @@ const page = () => {
                                 )}
                             />
                             <Button
-                                variant={"outline"}
-                                className="border-none bg-c-one text-c-two w-full" type="submit"
+                                type="submit"
+                                className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
                             >
                                 Login
                             </Button>
                             <Separator />
-                            <Button variant={"outline"} className="w-full text-c-two">
-                                <FcGoogle className="mr-2 h-4 w-4" />Or log in with Google
+                            <Button
+                                type="submit"
+                                className="w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
+                            >
+                                <FcGoogle className="mr-2 h-4 w-4" />
+                                Or sign up with google
                             </Button>
-                            <span className="text-xs">
-                                Dont't have an account?
-                                <span className="ml-1 text-c-one cursor-pointer">
-                                    Singup now
-                                </span>
-                            </span>
+                            <div className="text-sm">
+                                Don&apos;t have an account?
+                                <Link
+                                    href="./signup"
+                                    className="text-persianGreen font-bold ml-2 underline"
+                                >
+                                    Sign up now
+                                </Link>
+                            </div>
                         </form>
                     </Form>
                 </div>
@@ -119,10 +129,11 @@ const page = () => {
                     style={{
                         objectFit: "cover",
                     }}
+                    sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px"
                 />
             </div>
         </main>
     );
 }
 
-export default page;
+export default LoginPage;

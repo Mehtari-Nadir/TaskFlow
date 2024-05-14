@@ -42,6 +42,7 @@ type TBoardActions = {
     addBoard: (boardTitle: string, boardDescription?: string) => void;
     deleteBoard: (boardId: string) => void;
     editBoard: (boardId: string, boardTitle: string, boardDescription?: string) => void;
+    setSearchTerm: (term: string) => void;
 }
 
 type TTaskState = {
@@ -51,7 +52,7 @@ type TColumnState = {
     columns: TColumn[];
     draggedColumn: string | null;
 }
-type TBoardState = { boards: TBoard[] }
+type TBoardState = { boards: TBoard[], searchTerm: string}
 
 type TTaskStore = TTaskState & TTaskActions;
 type TColumnStore = TColumnState & TColumnActions;
