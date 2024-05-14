@@ -2,10 +2,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Camera, X } from "lucide-react";
-const DEFAULT_AVATAR = "assets/default-avatar.svg";
 
-const ProfileImage = () => {
-  const [selectedImage, setSelectedImage] = useState(DEFAULT_AVATAR);
+const DEFAULT_AVATAR = "/public/assets/default-avatar.svg";
+
+type ProfileImageProps = {
+  profileImage?: string;
+};
+
+const ProfileImage = ({ profileImage }: ProfileImageProps) => {
+  const [selectedImage, setSelectedImage] = useState(
+    profileImage || DEFAULT_AVATAR,
+  );
 
   //TODO: Handle image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +32,7 @@ const ProfileImage = () => {
   return (
     <div className="pt-10">
       <div className="relative inline-block h-24 w-24 rounded-full ring ring-persianGreen ring-offset-4 dark:ring-offset-richBlack overflow-hidden">
-        <div
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+        <div style={{ position: "relative", width: "100%", height: "100%" }}>
           <Image
             alt="background-image"
             src={selectedImage}
@@ -36,12 +41,12 @@ const ProfileImage = () => {
             height={96}
           />
         </div>
-        <div className="absolute top-0 h-full w-full rounded-full bg-opacity-25 flex items-center justify-center">
+        <div className="opacity-0 hover:opacity-100 absolute top-0 h-full w-full rounded-full bg-opacity-25 flex items-center justify-center">
           <label
             htmlFor="fileUpload"
             className="cursor-pointer p-2 rounded-full hover:bg-white hover:bg-opacity-25 focus:outline-none transition duration-200"
           >
-            <Camera size={48} color="white" className="h-6 w-6" />
+            <Camera size={24} />
             <input
               type="file"
               accept="image/*"
@@ -51,11 +56,11 @@ const ProfileImage = () => {
             />
           </label>
           <button
-            type="submit"
+            type="button"
             className="p-2 rounded-full hover:bg-white hover:bg-opacity-25 focus:outline-none transition duration-200"
             onClick={handleImageRemoval}
           >
-            <X size={48} color="white" className="h-6 w-6" />
+            <X size={24} />
           </button>
         </div>
       </div>
