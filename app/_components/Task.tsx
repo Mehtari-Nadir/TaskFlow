@@ -34,7 +34,7 @@ const Task = (
 
     const [openTaskDialog, setTaskDialog] = useState(false);
     const deleteTask = useTaskStore(actions => actions.deleteTask);
-    
+
     const PriorityColors: { [key in Priority]: string } = {
         [Priority.High]: '#FF0000', // Red
         [Priority.Medium]: '#FF9900', // Orange
@@ -47,13 +47,13 @@ const Task = (
                 <div
                     className={`
                         relative flex items-center justify-between
-                        rounded-lg bg-c-two px-3
-                        py-2 text-white max-h-[5rem]
+                        rounded-lg bg-background px-3
+                        py-2 max-h-[5rem]
                         border-[1px] hover:border-c-one
                     `}
                 >
                     <div className="w-full overflow-hidden flex flex-col gap-y-1">
-                        <h3 className='truncate font-medium'>{taskTitle}</h3>
+                        <h3 className='truncate font-medium text-black dark:text-white'>{taskTitle}</h3>
                         <div className="flex items-center justify-between">
                             <div className="flex gap-x-2">
                                 {dueDate &&
@@ -61,7 +61,7 @@ const Task = (
                                         {dueDate.getDate() + " " + dueDate.toLocaleString('default', { month: 'long' })}
                                     </Badge>
                                 }
-                                {priority && <Badge style={{backgroundColor: PriorityColors[priority]}}>{priority}</Badge>}
+                                {priority && <Badge style={{ backgroundColor: PriorityColors[priority] }}>{priority}</Badge>}
                             </div>
                             <StackedAvatars />
                         </div>
