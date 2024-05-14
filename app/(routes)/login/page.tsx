@@ -40,22 +40,24 @@ const LoginPage = () => {
     }
 
     return (
-        <main className="text-white bg-c-two flex w-full h-screen">
+        <main className="flex w-full h-screen">
             <div className="h-screen w-1/3 max-lg:w-1/2 max-md:w-full">
-                <div className="flex items-center gap-x-2  p-5">
-                    <Image
-                        alt="logo"
-                        src={"/assets/logo.svg"}
-                        width={50}
-                        height={50}
-                    />
-                    <div className="font-bold text-xl">
-                        <span>Task<span className="text-c-one">Flow</span></span>
+                <Link href="./">
+                    <div className="flex items-center gap-x-2 p-5 transition-all duration-300 hover:scale-105">
+                        <Image
+                            alt="logo"
+                            src={"/assets/taskflow-logo.svg"}
+                            width={50}
+                            height={50}
+                        />
+                        <div className="font-bold text-xl">
+                            <span>Task<span className="text-c-one">Flow</span></span>
+                        </div>
                     </div>
-                </div>
+                </Link>
                 <div className="px-12 flex flex-col items-center justify-center">
                     <h1
-                        className=" my-5 font-bold text-xl text-center"
+                        className=" my-5 font-bold text-xl text-center text-balance"
                     >
                         Welcome Back! Log In to Supercharge Your Productivity!
                     </h1>
