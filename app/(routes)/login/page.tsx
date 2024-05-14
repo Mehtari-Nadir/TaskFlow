@@ -70,7 +70,7 @@ const LoginPage = () => {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="example@gmale.com" {...field} />
+                                            <Input placeholder="example@gmail.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
