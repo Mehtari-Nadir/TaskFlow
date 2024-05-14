@@ -13,14 +13,14 @@ const CreateBoardBtn = () => {
         <>
             <Button
                 onClick={() => setOpen(true)}
-                className="bg-c-one max-md:hidden" variant={"outline"}
+                className="px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen max-md:hidden" variant={"outline"}
             >
                 Create Board
             </Button>
             <Button onClick={() => setOpen(true)} size={"icon"}
-                className="bg-c-one md:hidden" variant={"outline"}
+                className="bg-c-one md:hidden mx-2" variant={"outline"}
             >
-                <PlusIcon className="h-4 w-4" />
+                <PlusIcon color="black" className="h-4 w-4" />
             </Button>
             <CreateBoardDialog open={open} setOpen={setOpen} />
         </>
