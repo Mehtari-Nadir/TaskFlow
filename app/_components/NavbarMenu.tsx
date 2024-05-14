@@ -15,7 +15,7 @@ const NavbarMenu = () => {
     return (
         <Menubar>
             <MenubarMenu>
-                <MenubarTrigger>Boards</MenubarTrigger>
+                <MenubarTrigger className="px-4 py-2 cursor-pointer font-bold" >Boards</MenubarTrigger>
                 <MenubarContent>
                     {boards.map((value, index) => {
                         return (
