@@ -20,8 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator"
 import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
 
-const page = () => {
+const LoginPage = () => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
