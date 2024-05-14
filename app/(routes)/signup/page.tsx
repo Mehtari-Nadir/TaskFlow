@@ -17,9 +17,9 @@ import TaskFlowLogo from "/public/assets/taskflow-logo.svg";
 import Background from "/public/assets/auth-bg.jpg";
 import { FcGoogle } from "react-icons/fc";
 import { SignupSchema, SignupFields } from "./signupValidationSchema";
+import { Separator } from "@/components/ui/separator";
 
 const SignupPage = () => {
-
   const signupForm = useForm<SignupFields>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -33,24 +33,26 @@ const SignupPage = () => {
   };
 
   return (
-    <main className="flex w-full min-h-screen overflow-auto">
+    <main className="flex w-full min-h-screen overflow-x-hidden">
       <div className="w-1/3 max-lg:w-1/2 max-md:w-full">
-        <div className="flex items-center gap-x-2 p-5">
-          <Image src={TaskFlowLogo} alt="taskflow-logo" width={50} />
-          <div className="font-bold text-2xl">
-            <span>Task</span>
-            <span className="text-persianGreen">Flow</span>
+        <Link href="./">
+          <div className="flex items-center gap-x-2 p-5 transition-all duration-300 hover:scale-105">
+            <Image src={TaskFlowLogo} alt="taskflow-logo" width={50} />
+            <div className="font-bold text-xl">
+              <span>Task</span>
+              <span className="text-persianGreen">Flow</span>
+            </div>
           </div>
-        </div>
+        </Link>
         <div className="px-12 flex flex-col items-center justify-center">
-          <div className="my-5 font-bold text-2xl">
+          <div className="my-5 font-bold text-2xl text-balance">
             <h1>Unlock Your Productivity</h1>
             <h1>Sign up now!</h1>
           </div>
           <Form {...signupForm}>
             <form
               onSubmit={signupForm.handleSubmit(onSubmit)}
-              className="space-y-5 w-full"
+              className="space-y-3 w-full"
             >
               <FormField
                 control={signupForm.control}
