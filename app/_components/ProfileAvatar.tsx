@@ -12,6 +12,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 const ProfileAvatar = ({ image_url }: { image_url: string }) => {
 
@@ -37,8 +38,7 @@ const ProfileAvatar = ({ image_url }: { image_url: string }) => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem>
-                        Settings
-                    </DropdownMenuItem>
+                        <Link href="/home/settings">Settings</Link>                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
