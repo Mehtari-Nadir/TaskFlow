@@ -95,21 +95,28 @@ const LoginPage = () => {
                                 )}
                             />
                             <Button
-                                variant={"outline"}
-                                className="border-none bg-c-one text-c-two w-full" type="submit"
+                                type="submit"
+                                className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
                             >
                                 Login
                             </Button>
                             <Separator />
-                            <Button variant={"outline"} className="w-full text-c-two">
-                                <FcGoogle className="mr-2 h-4 w-4" />Or log in with Google
+                            <Button
+                                type="submit"
+                                className="w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
+                            >
+                                <FcGoogle className="mr-2 h-4 w-4" />
+                                Or sign up with google
                             </Button>
-                            <span className="text-xs">
-                                Dont't have an account?
-                                <span className="ml-1 text-c-one cursor-pointer">
-                                    Singup now
-                                </span>
-                            </span>
+                            <div className="text-sm">
+                                Don&apos;t have an account?
+                                <Link
+                                    href="./signup"
+                                    className="text-persianGreen font-bold ml-2 underline"
+                                >
+                                    Sign up now
+                                </Link>
+                            </div>
                         </form>
                     </Form>
                 </div>
@@ -122,10 +129,11 @@ const LoginPage = () => {
                     style={{
                         objectFit: "cover",
                     }}
+                    sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px"
                 />
             </div>
         </main>
     );
 }
 
-export default page;
+export default LoginPage;
