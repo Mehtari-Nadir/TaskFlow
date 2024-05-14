@@ -44,7 +44,7 @@ const EditBoardDialog = (
         boardName: string,
         boardDescription?: string
     }) => {
-        
+
     const editBoard = useBoardStore(actions => actions.editBoard);
 
     const form = useForm<z.infer<typeof createBoardFormSchema>>({
@@ -65,7 +65,7 @@ const EditBoardDialog = (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Let's build a Board</DialogTitle>
+                    <DialogTitle>Let&apos;s build a Board</DialogTitle>
                     <DialogDescription>
                         Enhance Team Efficiency: Centralize Board Access for Seamless Collaboration!
                     </DialogDescription>
@@ -101,7 +101,7 @@ const EditBoardDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button className="bg-c-one" variant={"outline"} type="submit">Create</Button>
+                        <Button className="bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen" variant={"outline"} type="submit">Create</Button>
                     </form>
                 </Form>
             </DialogContent>
