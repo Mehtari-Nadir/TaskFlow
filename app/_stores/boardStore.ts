@@ -2,7 +2,9 @@ import { createStore } from "zustand";
 import { v4 as uuidv4 } from "uuid";
 
 export const initBoardStore = (): TBoard[] => {
-    return []
+    return [
+        {boardId: "b-0", boardTitle: "TaskFlow"}
+    ]
 }
 
 const defaultInitialState: TBoard[] = [];

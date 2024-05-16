@@ -2,7 +2,9 @@ import { createStore } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 
 export const initTaskStore = (): TTask[] => {
-    return [];
+    return [
+        {columnId: "c-0", taskId: "t-0", taskTitle: "Learn react"}
+    ];
 }
 
 const defaultInitialState: TTask[] = [];
