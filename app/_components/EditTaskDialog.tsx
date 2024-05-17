@@ -182,7 +182,7 @@ const EditTaskDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Add Task</Button>
+                        <Button type="submit">Save Task</Button>
                     </form>
                 </Form>
             </DialogContent>

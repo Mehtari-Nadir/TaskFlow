@@ -4,6 +4,13 @@ enum Priority {
     Low = 'Low',
 }
 
+type TUser = {
+    userId: string;
+    userName: string;
+    userEmail: string;
+    userPassword: string;
+}
+
 type TBoard = {
     boardId: string;
     boardTitle: string;
@@ -23,6 +30,10 @@ type TTask = {
     taskDescription?: string;
     dueDate?: Date;
     priority?: Priority;
+}
+
+type TUserActions = {
+
 }
 
 type TTaskActions = {
@@ -54,6 +65,7 @@ type TColumnState = {
 }
 type TBoardState = { boards: TBoard[], searchTerm: string}
 
+type TUserStore = TUserState & TUserActions;
 type TTaskStore = TTaskState & TTaskActions;
 type TColumnStore = TColumnState & TColumnActions;
 type TBoardStore = TBoardState & TBoardActions;

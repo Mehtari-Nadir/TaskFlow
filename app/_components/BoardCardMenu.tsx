@@ -41,7 +41,7 @@ const BoardCardMenu = (
                     <DropdownMenuItem
                         className="text-red-500"
                         onClick={() => {
-                            toast.warning("Dlete This column??", {
+                            toast.warning("Dlete This board??", {
                                 description: "All Columns and tasks in this board will be deleted.",
                                 action: {
                                     label: "Delete",
