@@ -105,7 +105,7 @@ const AiDialog = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<Re
         const result = await chatSession.sendMessage(values.prompt);
         let text = result.response.text().replace(/\n/g, '');
 
-        console.log(text);
+        // console.log(text);
 
         // let tasksStart = text.indexOf('tasks: [') + 7;
         // let tasksEnd = text.indexOf('],', tasksStart) + 1;
