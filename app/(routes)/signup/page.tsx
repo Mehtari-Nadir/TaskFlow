@@ -1,4 +1,6 @@
 "use client";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import {
   Form,
   FormControl,
@@ -18,6 +20,8 @@ import Background from "/public/assets/auth-bg.jpg";
 import { FcGoogle } from "react-icons/fc";
 import { SignupSchema, SignupFields } from "./signupValidationSchema";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const SignupPage = () => {
   const signupForm = useForm<SignupFields>({
@@ -28,8 +32,34 @@ const SignupPage = () => {
       password: "",
     },
   });
-  const onSubmit = (data: SignupFields) => {
-    console.log("submitted data : ", JSON.stringify(data, null, 2));
+
+  const supabase = createClientComponentClient();
+
+  const handleSignUp = async (email: string, password: string) => {
+    const result = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`
+      }
+    });
+    return result;
+    // do a route.refresh()
+  }
+
+  const onSubmit = async (data: SignupFields) => {
+    const result = await handleSignUp(data.email, data.password);
+    console.log(result);
+    signupForm.reset();
+    if (result.data.user !== null) {
+      toast.success("Account successfully created", {
+        description: "Check your email for validation",
+      });
+    } else {
+      toast.error("Something went wrong.", {
+        description: "Please check your internet connection.",
+      });
+    }
   };
 
   return (
@@ -149,6 +179,7 @@ const SignupPage = () => {
           sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px"
         />
       </div>
+      <Toaster richColors />
     </main>
   );
 };
