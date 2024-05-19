@@ -1,7 +1,9 @@
 "use client"
 
-import Image from "next/image";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
+import Image from "next/image";
+import { useRouter } from 'next/navigation'
 import { z } from "zod";
 import formSchema from "./formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,9 +23,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator"
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const LoginPage = () => {
 
+    const route = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -32,11 +37,26 @@ const LoginPage = () => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
-        form.reset();
+    const supabase = createClientComponentClient();
+
+    const handleLogin = async (email: string, password: string) => {
+        const result = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+        // do a route.refresh()
+        return result;
+    }
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const result = await handleLogin(values.email, values.password);
+        if (result.data.user == null) {
+            toast.error("Something went wrong.", {
+                description: "Please create a new account or check your internet connection.",
+            });
+            return;
+        }
+        route.push("/home");
     }
 
     return (
@@ -132,6 +152,7 @@ const LoginPage = () => {
                     sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px"
                 />
             </div>
+            <Toaster richColors />
         </main>
     );
 }
