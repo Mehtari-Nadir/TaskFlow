@@ -25,8 +25,12 @@ import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const LoginPage = () => {
+
+    const [isLoading, setLoading] = useState(false);
 
     const route = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -49,7 +53,9 @@ const LoginPage = () => {
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        setLoading(true);
         const result = await handleLogin(values.email, values.password);
+        setLoading(false);
         if (result.data.user == null) {
             toast.error("Something went wrong.", {
                 description: "Please create a new account or check your internet connection.",
@@ -115,9 +121,11 @@ const LoginPage = () => {
                                 )}
                             />
                             <Button
+                                disabled={isLoading}
                                 type="submit"
                                 className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
                             >
+                                { isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                                 Login
                             </Button>
                             <Separator />
