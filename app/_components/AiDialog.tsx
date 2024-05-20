@@ -19,7 +19,7 @@ import {
   HarmBlockThreshold,
 } from "@google/generative-ai";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import { useColumnStore } from "../_providers/column-store-provider";
 import { useTaskStore } from "../_providers/task-store-provider";
@@ -27,14 +27,12 @@ import { toast } from "sonner";
 import SparkleButton from "@/components/ui/sparkle-button";
 
 const aiPromptSchema = z.object({
-  prompt: z
-    .string()
-    .min(10, {
-      message:
-        "The prompt you provided is too short. Please ensure your input is at least 10 characters long.",
-    }),
+  prompt: z.string().min(10, {
+    message:
+      "The prompt you provided is too short. Please ensure your input is at least 10 characters long.",
+  }),
 });
-type aiPrompt = z.infer<typeof aiPromptSchema>;
+type AiPrompt = z.infer<typeof aiPromptSchema>;
 
 const taskResponse = z.object({
   taskId: z.string(),
@@ -55,6 +53,11 @@ const promptResult = z.object({
   tasks: z.array(taskResponse),
   columns: z.array(columnResponse),
 });
+
+type PromptResultIds = {
+  taskIds: string[];
+  columnIds: string[];
+};
 
 const getData = async () => {
   const token = "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";
@@ -90,9 +93,22 @@ type AiDialogProps = {
 
 const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
   const [isPending, startTransition] = useTransition();
-  const addColumn = useColumnStore((state) => state.addColumn);
-  const addTask = useTaskStore((state) => state.addTask);
-  const form = useForm<aiPrompt>({
+  const { addColumn, deleteColumn } = useColumnStore((state) => ({
+    addColumn: state.addColumn,
+    deleteColumn: state.deleteColumn,
+  }));
+  const { addTask, deleteTask } = useTaskStore((state) => ({
+    addTask: state.addTask,
+    deleteTask: state.deleteTask,
+  }));
+  const initialPromptResultIds: PromptResultIds = {
+    taskIds: [],
+    columnIds: [],
+  };
+  const [promptResultIds, setPromptResultIds] = useState<PromptResultIds>(
+    initialPromptResultIds,
+  );
+  const form = useForm<AiPrompt>({
     resolver: zodResolver(aiPromptSchema),
     defaultValues: {
       prompt: "",
@@ -151,7 +167,7 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
       return null;
     }
   };
-  const onSubmit = (values: aiPrompt) => {
+  const onSubmit = (values: AiPrompt) => {
     startTransition(async () => {
       try {
         const systemPrompt = await getData();
@@ -177,12 +193,22 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
         );
         const parsedData = parseData(data);
         if (!parsedData) return;
-        const { tasks, columns } = promptResult.parse(parsedData);
-        columns.forEach(({ columnTitle, columnId }: ColumnResponse) =>
-          addColumn(boardId, columnTitle, columnId),
+        promptResultIds.taskIds.forEach((taskId: string) => deleteTask(taskId));
+        promptResultIds.columnIds.forEach((columnId: string) =>
+          deleteColumn(columnId),
         );
+        setPromptResultIds(initialPromptResultIds);
+        const {
+          columnIds: newColumnIds,
+          taskIds: newTaskIds,
+        }: PromptResultIds = initialPromptResultIds;
+        const { tasks, columns } = promptResult.parse(parsedData);
+        columns.forEach(({ columnTitle, columnId }: ColumnResponse) => {
+          addColumn(boardId, columnTitle, columnId);
+          newColumnIds.push(columnId);
+        });
         tasks.forEach(
-          ({ taskId, columnId, taskTitle, taskDescription }: TaskResponse) =>
+          ({ taskId, columnId, taskTitle, taskDescription }: TaskResponse) => {
             addTask(
               columnId,
               taskTitle,
@@ -190,8 +216,11 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
               undefined,
               undefined,
               taskId,
-            ),
+            );
+            newTaskIds.push(taskId);
+          },
         );
+        setPromptResultIds({ taskIds: newTaskIds, columnIds: newColumnIds });
       } catch (error) {
         toast.error(`${error}`);
       } finally {
@@ -224,7 +253,7 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
                 </FormItem>
               )}
             />
-            <SparkleButton title="Generate">
+            <SparkleButton title="Generate" isPending={isPending}>
               <AiOutlineLoading3Quarters
                 className={cn("animate-spin", { hidden: !isPending })}
               />
