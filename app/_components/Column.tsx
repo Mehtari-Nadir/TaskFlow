@@ -1,7 +1,9 @@
+"use client";
 import ColumnMenuBtn from "./ColumnMenuBtn";
 import Task from "./Task";
 import { useTaskStore } from "../_providers/task-store-provider";
 import { useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Column = ({ columnId, columnTitle }: { columnId: string, columnTitle: string }) => {
 
@@ -23,11 +25,26 @@ const Column = ({ columnId, columnTitle }: { columnId: string, columnTitle: stri
                 />
             </div>
             <div className="flex flex-col gap-2 overflow-y-auto max-h-[375px]">
-                {filtredTasks.map((value, index) => {
-                    return (
-                        <Task key={index} {...value} />
-                    );
-                })}
+                <AnimatePresence initial={false}>
+                    {filtredTasks.map((task, index) => {
+                        return (
+                            <motion.div
+                                key={task.taskId}
+                                initial={{ height: 0 }}
+                                animate={{ height: "auto" }}
+                                exit={{
+                                    opacity: 0,
+                                    height: 0,
+                                    y: -50,
+                                    zIndex: index,
+                                }}
+                                transition={{ ease: [0.32, 0.72, 0, 1], duration: 0.35 }}
+                            >
+                                <Task {...task} />
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
             </div>
         </div>
     );
