@@ -1,12 +1,11 @@
 "use client"
-
 import CreateBoardBtn_home from "./CreateBoardBtn_home";
 import { useBoardStore } from "../_providers/board-store-provider";
 import BoardCard from "./BoardCard";
 import { Input } from "@/components/ui/input";
 import { useMemo } from "react";
 import { Search } from "lucide-react";
-
+import { motion } from "framer-motion"
 const BoardsContainer = () => {
 
     const { boards, searchTerm, setSearchTerm } = useBoardStore(state => ({
@@ -29,16 +28,16 @@ const BoardsContainer = () => {
                 <Search size={20} className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-3" />
             </div>
             <div className="w-full flex items-center justify-center">
-                <div className="w-full flex items-start justify-start max-md:justify-center gap-3 flex-wrap p-6">
+                <motion.div layout className="w-full flex items-start justify-start max-md:justify-center gap-3 flex-wrap p-6">
                     {
-                        filteredBoards.map((board, index) => {
+                        filteredBoards.map((board: TBoard) => {
                             return (
-                                <BoardCard key={index} {...board} />
+                                <BoardCard key={board.boardId} {...board} />
                             );
                         })
                     }
-                    {(!!filteredBoards.length && !!searchTerm) || <CreateBoardBtn_home />}
-                </div>
+                    {(!!filteredBoards.length && !!searchTerm) || <CreateBoardBtn_home key="create-board-btn" />}
+                </motion.div>
             </div>
         </>
     );
