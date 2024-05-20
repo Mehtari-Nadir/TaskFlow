@@ -14,9 +14,11 @@ const BoardCard = ({ boardId, boardTitle, boardDescription }: { boardId: string,
         <AnimatePresence>
             <motion.div
                 layout
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 animate={{ opacity: 1 }}
-                initial={{ opacity: 0 }}
                 exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
             >
                 <div className="flex items-start justify-between w-[250px] h-[130px] p-3 rounded-md shadow-[-10px_-10px_30px_4px_rgba(0,0,0,0.1),_10px_10px_30px_4px_rgba(45,78,255,0.15)]"
                     style={{

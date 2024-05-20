@@ -230,7 +230,7 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
     });
   };
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={isPending ? () => { } : setOpen}>
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
