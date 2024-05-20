@@ -3,7 +3,13 @@ import { v4 as uuidv4 } from "uuid";
 
 export const initBoardStore = (): TBoard[] => {
     return [
-        {boardId: "b-0", boardTitle: "TaskFlow"}
+        {boardId: "b-0", boardTitle: "TaskFlow"},
+        {boardId: "b-1", boardTitle: "Project Management"},
+        {boardId: "b-2", boardTitle: "Software Development"},
+        {boardId: "b-3", boardTitle: "Marketing Campaign"},
+        {boardId: "b-4", boardTitle: "Product Design"},
+        {boardId: "b-5", boardTitle: "Customer Support"},
+        {boardId: "b-6", boardTitle: "Human Resources"},
     ]
 }
 

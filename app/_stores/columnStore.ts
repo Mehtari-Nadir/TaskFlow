@@ -18,9 +18,9 @@ export const createColumnStore = (
             {
                 columns: [...initState],
                 draggedColumn: null,
-                addColumn: (boardId: string, columnTitle: string) => {
+                addColumn: (boardId: string, columnTitle: string, columnId?: string) => {
                     set((state) => ({
-                        columns: [...state.columns, { boardId, columnTitle, columnId: uuidv4() }],
+                        columns: [...state.columns, { boardId, columnTitle, columnId: columnId ?? uuidv4() }],
                     }));
                 },
                 deleteColumn: (columnId: string) => {
