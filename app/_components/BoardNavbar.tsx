@@ -7,8 +7,18 @@ import { useMemo, useState } from "react";
 import { useBoardStore } from "../_providers/board-store-provider";
 import { RiSparklingFill } from "react-icons/ri";
 import AiDialog from "./AiDialog";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-const BoardNavbar = ({ boardId }: { boardId: string }) => {
+type BoardNavbarProps = {
+    boardId: string;
+}
+
+const BoardNavbar = ({ boardId }: BoardNavbarProps) => {
 
     const [open, setOpen] = useState(false);
 
@@ -26,11 +36,23 @@ const BoardNavbar = ({ boardId }: { boardId: string }) => {
             </div>
             <div className="flex items-center justify-center gap-x-2">
                 <StackedAvatars />
-                <Button onClick={() => setOpen(true)} size={"icon"} variant={"outline"}>
-                    <RiSparklingFill size={20} color="gold" />
-                </Button>
-                <AiDialog open={open} setOpen={setOpen} />
-                <Button variant={"outline"}>
+                <TooltipProvider>
+                    <Tooltip >
+                        <TooltipTrigger asChild>
+                            <Button className="transform hover:-translate-y-1 transition duration-400" onClick={() => setOpen(true)} size={"icon"} variant={"outline"}>
+                                <RiSparklingFill size={20} color="gold" />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-background border">
+                            <div className="flex items-center gap-1.5">
+                                <h3 className="text-black dark:text-white font-base text-sm">Ask AI</h3>
+                                <RiSparklingFill size={20} color="gold" />
+                            </div>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <AiDialog open={open} setOpen={setOpen} boardId={boardId} />
+                <Button variant={"outline"} className="font-bold">
                     <Share1Icon className="mr-2 h-4 w-4" />
                     Share
                 </Button>
