@@ -1,6 +1,7 @@
 "use client";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import {
   Form,
   FormControl,
@@ -22,8 +23,12 @@ import { SignupSchema, SignupFields } from "./signupValidationSchema";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { useState } from "react";
 
 const SignupPage = () => {
+
+  const [isLoading, setLoading] = useState(false);
+  
   const signupForm = useForm<SignupFields>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -48,8 +53,9 @@ const SignupPage = () => {
   }
 
   const onSubmit = async (data: SignupFields) => {
+    setLoading(true);
     const result = await handleSignUp(data.email, data.password);
-    console.log(result);
+    setLoading(false);
     signupForm.reset();
     if (result.data.user !== null) {
       toast.success("Account successfully created", {
@@ -140,8 +146,10 @@ const SignupPage = () => {
               />
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
               >
+                {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                 Sign up
               </Button>
               <Separator />

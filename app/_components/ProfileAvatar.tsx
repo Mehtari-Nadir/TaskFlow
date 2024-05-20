@@ -12,10 +12,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const ProfileAvatar = ({ image_url }: { image_url: string }) => {
+
+    const supabase = createClientComponentClient();
+    const router = useRouter();
 
     return (
         <DropdownMenu>
@@ -46,7 +50,12 @@ const ProfileAvatar = ({ image_url }: { image_url: string }) => {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={async () => {
+                            await supabase.auth.signOut();
+                            router.push("/login");
+                        }}
+                    >
                         Log-out
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
