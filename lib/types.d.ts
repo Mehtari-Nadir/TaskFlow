@@ -37,13 +37,13 @@ type TUserActions = {
 }
 
 type TTaskActions = {
-    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
+    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId?: string) => void;
     deleteTask: (taskId: string) => void;
     editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
 }
 
 type TColumnActions = {
-    addColumn: (boardId: string, columnTitle: string) => void;
+    addColumn: (boardId: string, columnTitle: string, columnId?: string) => void;
     deleteColumn: (columnId: string) => void;
     editColumn: (columnId: string, columnTitle: string) => void;
     dragColumn: (columnId: string | null) => void;
