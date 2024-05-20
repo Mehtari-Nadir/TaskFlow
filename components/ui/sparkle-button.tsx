@@ -10,9 +10,10 @@ const randomNumberBetween = (min: number, max: number) => {
 type AnimationSequence = Parameters<typeof animate>[0];
 type SparkleButtonProps = {
   title: string;
+  isPending: boolean;
   children: React.ReactNode;
 };
-const SparkleButton = ({ title, children }: SparkleButtonProps) => {
+const SparkleButton = ({ title, isPending, children }: SparkleButtonProps) => {
   const [scope, animate] = useAnimate();
 
   const onButtonClick = () => {
@@ -70,6 +71,7 @@ const SparkleButton = ({ title, children }: SparkleButtonProps) => {
       <Button
         type="submit"
         onClick={onButtonClick}
+        disabled={isPending}
         className="dark:hover:bg-white hover:bg-persianGreen gap-2 group/button relative inline-flex items-center justify-center overflow-hidden rounded-md bg-persianGreen px-4 py-2 transition-all duration-300 hover:scale-105 border-2 border-transparent hover:border-persianGreen"
       >
         <span className="block h-8 overflow-hidden" aria-hidden>
