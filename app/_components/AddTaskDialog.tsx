@@ -29,13 +29,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
-
 import { useTaskStore } from "../_providers/task-store-provider";
+import { Plus } from "lucide-react";
 
 enum Priority {
     High = 'High',
@@ -44,8 +43,12 @@ enum Priority {
 };
 
 const createTaskSchema = z.object({
-    taskTitle: z.string().min(2, { message: "minimum 2 chars" }).max(64, { message: "maximum 64 chars" }),
-    taskDescription: z.string().max(255, { message: "minimum 255 chars" }).optional(),
+    taskTitle: z.string()
+        .min(2, { message: "The task title must be at least 2 characters long." })
+        .max(64, { message: "The task title must be no more than 64 characters long." }),
+    taskDescription: z.string()
+        .max(255, { message: "The task description must be no more than 255 characters long." })
+        .optional(),
     dueDate: z.date().optional(),
     priority: z.nativeEnum(Priority).optional(),
 })
@@ -90,7 +93,7 @@ const AddTaskDialog = (
                                 <FormItem>
                                     <FormLabel>Task Title</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Impl Design" {...field} />
+                                        <Input placeholder="Implement Design" {...field} />
                                     </FormControl>
                                     <FormDescription>Make a specific and clear task title</FormDescription>
                                     <FormMessage />
@@ -176,7 +179,12 @@ const AddTaskDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Add Task</Button>
+                        <Button
+                            type="submit"
+                            className="flex items-center gap-1.5 px-4 py-2 bg-persianGreen text-black font-bold transition-colors duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
+                        >
+                            <Plus size={18} />Add Task
+                        </Button>
                     </form>
                 </Form>
             </DialogContent>

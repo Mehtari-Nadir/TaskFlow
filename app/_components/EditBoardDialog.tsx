@@ -25,9 +25,9 @@ import { useForm } from "react-hook-form"
 
 import { useBoardStore } from "../_providers/board-store-provider";
 
-const createBoardFormSchema = z.object({
-    boardName: z.string().min(2, { message: "minimum 2 characters are required" }).max(25, { message: "maximum 25 characters" }),
-    boardDescription: z.string().max(255, { message: "maximum 255 characters" }).optional(),
+const editBoardSchema = z.object({
+    boardName: z.string().min(2, { message: "The board name must be at least 2 characters long." }).max(25, { message: "The board name must be no more than 25 characters long." }),
+    boardDescription: z.string().max(255, { message: "The board description must be no more than 255 characters long." }).optional(),
 });
 
 const EditBoardDialog = (
@@ -47,15 +47,15 @@ const EditBoardDialog = (
 
     const editBoard = useBoardStore(actions => actions.editBoard);
 
-    const form = useForm<z.infer<typeof createBoardFormSchema>>({
-        resolver: zodResolver(createBoardFormSchema),
+    const form = useForm<z.infer<typeof editBoardSchema>>({
+        resolver: zodResolver(editBoardSchema),
         defaultValues: {
             boardName: boardName,
             boardDescription: boardDescription
         },
     })
 
-    function onSubmit(values: z.infer<typeof createBoardFormSchema>) {
+    function onSubmit(values: z.infer<typeof editBoardSchema>) {
         editBoard(boardId, values.boardName, values.boardDescription);
         form.reset();
         setOpen(false);
@@ -64,12 +64,6 @@ const EditBoardDialog = (
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Let&apos;s build a Board</DialogTitle>
-                    <DialogDescription>
-                        Enhance Team Efficiency: Centralize Board Access for Seamless Collaboration!
-                    </DialogDescription>
-                </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 w-full">
                         <FormField
@@ -101,7 +95,7 @@ const EditBoardDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button className="bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen" variant={"outline"} type="submit">Create</Button>
+                        <Button className="bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen" variant={"outline"} type="submit">Save</Button>
                     </form>
                 </Form>
             </DialogContent>

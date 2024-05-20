@@ -26,8 +26,8 @@ import { useForm } from "react-hook-form"
 import { useBoardStore } from "../_providers/board-store-provider";
 
 const createBoardFormSchema = z.object({
-    boardName: z.string().min(2, { message: "minimum 2 characters are required" }).max(25, { message: "maximum 25 characters" }),
-    boardDescription: z.string().max(255, { message: "maximum 255 characters" }).optional(),
+    boardName: z.string().min(2, { message: "The board name must be at least 2 characters long." }).max(25, { message: "The board name must be no more than 25 characters long." }),
+    boardDescription: z.string().max(255, { message: "The board description must be no more than 255 characters long." }).optional(),
 });
 
 const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {

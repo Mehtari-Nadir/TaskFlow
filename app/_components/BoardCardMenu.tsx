@@ -25,6 +25,21 @@ const BoardCardMenu = (
 
     const [open, setOpen] = useState<boolean>(false);
     const deleteBoard = useBoardStore(actions => actions.deleteBoard);
+    const handleDelete = () =>
+        toast.warning("Delete This board?", {
+            description: "All Columns and tasks in this board will be deleted.",
+            action: (
+                <Button
+                    className="px-3 py-2 bg-red-400 text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-red-400 "
+                    onClick={() => {
+                        deleteBoard(boardId);
+                        toast.dismiss();
+                    }}
+                >
+                    Delete
+                </Button>
+            )
+        })
 
     return (
         <>
@@ -40,17 +55,7 @@ const BoardCardMenu = (
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         className="text-red-500"
-                        onClick={() => {
-                            toast.warning("Dlete This board??", {
-                                description: "All Columns and tasks in this board will be deleted.",
-                                action: {
-                                    label: "Delete",
-                                    onClick: () => {
-                                        deleteBoard(boardId);
-                                    }
-                                },
-                            })
-                        }}
+                        onClick={handleDelete}
                     >
                         Delete
                     </DropdownMenuItem>

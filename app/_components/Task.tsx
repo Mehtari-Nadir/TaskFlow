@@ -10,6 +10,7 @@ import { useState } from "react";
 import EditTaskDialog from "./EditTaskDialog";
 import { toast } from "sonner";
 import { useTaskStore } from "../_providers/task-store-provider";
+import { Button } from "@/components/ui/button";
 
 enum Priority {
     High = 'High',
@@ -40,6 +41,23 @@ const Task = (
         [Priority.Medium]: '#FF9900', // Orange
         [Priority.Low]: '#33CC33', // Green
     };
+    const handleDelete = () =>
+        toast.warning("Delete This task?", {
+            description: "Deleting this task will permanently remove it from this board.",
+            action: (
+                <div className="flex justify-end">
+                    <Button
+                        className="px-3 bg-red-400 text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-red-400 "
+                        onClick={() => {
+                            deleteTask(taskId);
+                            toast.dismiss();
+                        }}
+                    >
+                        Delete
+                    </Button>
+                </div>
+            ),
+        })
 
     return (
         <ContextMenu>
@@ -47,13 +65,12 @@ const Task = (
                 <div
                     className={`
                         relative flex items-center justify-between
-                        rounded-lg bg-background px-3
-                        py-2 max-h-[5rem]
+                        rounded-lg bg-background px-3 py-2
                         border-[1px] hover:border-c-one
                     `}
                 >
                     <div className="w-full overflow-hidden flex flex-col gap-y-1">
-                        <h3 className='truncate font-medium text-black dark:text-white'>{taskTitle}</h3>
+                        <h3 className='truncate font-medium text-black dark:text-white text-balance'>{taskTitle}</h3>
                         <div className="flex items-center justify-between">
                             <div className="flex gap-x-2">
                                 {dueDate &&
@@ -73,16 +90,7 @@ const Task = (
                     Edit
                 </ContextMenuItem>
                 <ContextMenuItem className="text-red-500"
-                    onClick={() => {
-                        toast.warning("Dlete This task??", {
-                            action: {
-                                label: "Delete",
-                                onClick: () => {
-                                    deleteTask(taskId);
-                                }
-                            },
-                        })
-                    }}
+                    onClick={handleDelete}
                 >
                     Delete
                 </ContextMenuItem>

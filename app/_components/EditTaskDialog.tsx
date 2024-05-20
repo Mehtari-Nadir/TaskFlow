@@ -43,9 +43,13 @@ enum Priority {
     Low = 'Low',
 };
 
-const createTaskSchema = z.object({
-    taskTitle: z.string().min(2, { message: "minimum 2 chars" }).max(64, { message: "maximum 64 chars" }),
-    taskDescription: z.string().max(255, { message: "minimum 255 chars" }).optional(),
+const editTaskSchema = z.object({
+    taskTitle: z.string()
+        .min(2, { message: "The task title must be at least 2 characters long." })
+        .max(64, { message: "The task title must be no more than 64 characters long." }),
+    taskDescription: z.string()
+        .max(255, { message: "The task description must be no more than 255 characters long." })
+        .optional(),
     dueDate: z.date().optional(),
     priority: z.nativeEnum(Priority).optional(),
 })
@@ -68,17 +72,17 @@ const EditTaskDialog = (
         return tasks.filter(task => task.taskId == taskId);
     }, [taskId, tasks]);
 
-    const form = useForm<z.infer<typeof createTaskSchema>>({
-        resolver: zodResolver(createTaskSchema),
+    const form = useForm<z.infer<typeof editTaskSchema>>({
+        resolver: zodResolver(editTaskSchema),
         defaultValues: {
-            taskTitle: currentTask[0].taskTitle,
-            taskDescription: currentTask[0].taskDescription,
-            dueDate: currentTask[0].dueDate,
-            priority: currentTask[0].priority
+            taskTitle: currentTask[0]?.taskTitle,
+            taskDescription: currentTask[0]?.taskDescription,
+            dueDate: currentTask[0]?.dueDate,
+            priority: currentTask[0]?.priority
         },
     })
 
-    function onSubmit(values: z.infer<typeof createTaskSchema>) {
+    function onSubmit(values: z.infer<typeof editTaskSchema>) {
         editTask(taskId, values.taskTitle, values.taskDescription, values.dueDate, values.priority);
         form.reset();
         setTaskDialog(false);
@@ -87,7 +91,7 @@ const EditTaskDialog = (
     return (
         <Dialog open={openTaskDialog} onOpenChange={setTaskDialog}>
             <DialogContent>
-            <Form {...form}>
+                <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                             control={form.control}
@@ -182,7 +186,10 @@ const EditTaskDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Save Task</Button>
+                        <Button
+                            type="submit"
+                            className="px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
+                        >Save Task</Button>
                     </form>
                 </Form>
             </DialogContent>

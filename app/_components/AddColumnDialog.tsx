@@ -13,15 +13,16 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-
 import { useColumnStore } from "../_providers/column-store-provider"
+import { Plus } from "lucide-react";
 
 const createColumnSchema = z.object({
-    columnTitle: z.string().min(2, { message: "minimum 2 chars" }).max(20, { message: "maximum 20 chars" }),
+    columnTitle: z.string()
+        .min(2, { message: "The column title must be at least 2 characters long." })
+        .max(20, { message: "The column title must be no more than 20 characters long." })
 })
 
 const AddColumnDialog = (
@@ -70,7 +71,12 @@ const AddColumnDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Add Column</Button>
+                        <Button
+                            type="submit"
+                            className="flex items-center gap-1.5 px-4 py-2 bg-persianGreen text-black font-bold transition-colors duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
+                        >
+                            <Plus size={18} />Add Column
+                        </Button>
                     </form>
                 </Form>
             </DialogContent>
