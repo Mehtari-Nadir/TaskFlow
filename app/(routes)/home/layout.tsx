@@ -35,7 +35,7 @@ const HomeLayout = async ({ children }: { children: React.ReactNode }) => {
                     </ColumnStoreProvider>
                 </BoardStoreProvider>
             </UserStoreProvider>
-            <Toaster />
+            <Toaster richColors />
         </>
     );
 }
