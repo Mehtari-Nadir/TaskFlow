@@ -38,7 +38,7 @@ const ProfileAvatar = ({ image_url }: { image_url: string }) => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <Link href={"/settings"}>
+                    <Link href="/home/settings">
                         <DropdownMenuItem>
                             Settings
                         </DropdownMenuItem>
