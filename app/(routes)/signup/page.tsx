@@ -28,7 +28,7 @@ import { useState } from "react";
 const SignupPage = () => {
 
   const [isLoading, setLoading] = useState(false);
-  
+
   const signupForm = useForm<SignupFields>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -153,24 +153,23 @@ const SignupPage = () => {
                 Sign up
               </Button>
               <Separator />
-              <Button
-                type="submit"
-                className="w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
-              >
-                <FcGoogle className="mr-2 h-4 w-4" />
-                Or sign up with google
-              </Button>
-              <div className="pb-4 text-sm">
-                Already have an account?
-                <Link
-                  href="./login"
-                  className="text-persianGreen font-bold ml-2 underline"
-                >
-                  Log in
-                </Link>
-              </div>
             </form>
           </Form>
+          <Button
+            className="mt-3 w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
+          >
+            <FcGoogle className="mr-2 h-4 w-4" />
+            Or sign up with google
+          </Button>
+          <div className="pb-4 text-sm mt-3">
+            Already have an account?
+            <Link
+              href="./login"
+              className="text-persianGreen font-bold ml-2 underline"
+            >
+              Log in
+            </Link>
+          </div>
         </div>
       </div>
       <div

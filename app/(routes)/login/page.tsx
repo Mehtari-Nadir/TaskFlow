@@ -125,28 +125,27 @@ const LoginPage = () => {
                                 type="submit"
                                 className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
                             >
-                                { isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+                                {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                                 Login
                             </Button>
                             <Separator />
-                            <Button
-                                type="submit"
-                                className="w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
-                            >
-                                <FcGoogle className="mr-2 h-4 w-4" />
-                                Or sign up with google
-                            </Button>
-                            <div className="text-sm">
-                                Don&apos;t have an account?
-                                <Link
-                                    href="./signup"
-                                    className="text-persianGreen font-bold ml-2 underline"
-                                >
-                                    Sign up now
-                                </Link>
-                            </div>
                         </form>
                     </Form>
+                    <Button
+                        className="mt-5 w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
+                    >
+                        <FcGoogle className="mr-2 h-4 w-4" />
+                        Or sign up with google
+                    </Button>
+                    <div className="text-sm mt-3">
+                        Don&apos;t have an account?
+                        <Link
+                            href="./signup"
+                            className="text-persianGreen font-bold ml-2 underline"
+                        >
+                            Sign up now
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className="h-screen w-2/3 max-lg:w-1/2 max-md:hidden" style={{ position: "relative" }}>
