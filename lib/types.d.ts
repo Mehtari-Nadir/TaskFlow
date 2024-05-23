@@ -6,7 +6,7 @@ enum Priority {
 
 type TUser = {
     userId: string;
-    userName: string;
+    username: string;
     userEmail: string;
     userPassword: string;
 }
@@ -32,10 +32,6 @@ type TTask = {
     priority?: Priority;
 }
 
-type TUserActions = {
-
-}
-
 type TTaskActions = {
     addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
     deleteTask: (taskId: string) => void;
@@ -54,17 +50,28 @@ type TBoardActions = {
     deleteBoard: (boardId: string) => void;
     editBoard: (boardId: string, boardTitle: string, boardDescription?: string) => void;
     setSearchTerm: (term: string) => void;
+    fetchBoards: (userId) => void;
+}
+
+type TUserActions = {
+    addUser: (userId: string, username: string, userEmail: string, userPassword: string) => void;
+    removeUser: (userId: string) => void;
+}
+
+type TUserState = {
+    users: TUser[];
 }
 
 type TTaskState = {
     tasks: TTask[];
 }
+
 type TColumnState = {
     columns: TColumn[];
     draggedColumn: string | null;
 }
-type TBoardState = { boards: TBoard[], searchTerm: string}
 
+type TBoardState = { boards: TBoard[], searchTerm: string}
 type TUserStore = TUserState & TUserActions;
 type TTaskStore = TTaskState & TTaskActions;
 type TColumnStore = TColumnState & TColumnActions;
