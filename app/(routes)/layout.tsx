@@ -1,7 +1,11 @@
+import { BoardStoreProvider } from "../_providers/board-store-provider";
+
 export default function Home({ children }: { children: React.ReactNode }) {
   return (
     <main>
-      {children}
+      <BoardStoreProvider>
+        {children}
+      </BoardStoreProvider>
     </main>
   );
 }

@@ -27,10 +27,13 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useBoardStore } from "@/app/_providers/board-store-provider";
 
 const LoginPage = () => {
 
     const [isLoading, setLoading] = useState(false);
+    const fetchBoards = useBoardStore(actions => actions.fetchBoards);
+    const supabase = createClientComponentClient();
 
     const route = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -41,27 +44,25 @@ const LoginPage = () => {
         },
     })
 
-    const supabase = createClientComponentClient();
-
     const handleLogin = async (email: string, password: string) => {
+        setLoading(true);
         const result = await supabase.auth.signInWithPassword({
             email,
             password,
         });
-        // do a route.refresh()
         return result;
     }
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        setLoading(true);
         const result = await handleLogin(values.email, values.password);
         setLoading(false);
-        if (result.data.user == null) {
+        if (result.error) {
             toast.error("Something went wrong.", {
                 description: "Please create a new account or check your internet connection.",
             });
             return;
         }
+        fetchBoards(result.data.user.id);
         route.push("/home");
     }
 

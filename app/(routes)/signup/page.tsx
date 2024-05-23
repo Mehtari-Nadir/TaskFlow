@@ -41,6 +41,7 @@ const SignupPage = () => {
   const supabase = createClientComponentClient();
 
   const handleSignUp = async (email: string, password: string) => {
+    setLoading(true);
     const result = await supabase.auth.signUp({
       email,
       password,
@@ -49,23 +50,32 @@ const SignupPage = () => {
       }
     });
     return result;
-    // do a route.refresh()
   }
 
   const onSubmit = async (data: SignupFields) => {
-    setLoading(true);
     const result = await handleSignUp(data.email, data.password);
+
     setLoading(false);
     signupForm.reset();
-    if (result.data.user !== null) {
-      toast.success("Account successfully created", {
-        description: "Check your email for validation",
-      });
-    } else {
+
+    if (result.error) {
       toast.error("Something went wrong.", {
         description: "Please check your internet connection.",
       });
+      return;
     }
+
+    toast.success("Account successfully created", {
+      description: "Check your email for validation",
+    });
+
+    const { data: response, error } = await supabase.from("users")
+    .insert([{
+      userId: result.data.user?.id,
+      username: data.username,
+      userEmail: data.email,
+      userPassword: data.password
+    }]);
   };
 
   return (
