@@ -2,7 +2,24 @@ import { createStore } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 
 export const initTaskStore = (): TTask[] => {
-    return [];
+    return [
+        {
+            taskId: "t-0",
+            columnId: "c-0",
+            taskTitle: "Impl Design",
+            taskDescription: "use figma",
+            // dueDate: null,
+            // priority: null
+        },
+        {
+            taskId: "t-1",
+            columnId: "c-2",
+            taskTitle: "Fix Ai",
+            taskDescription: "use next ai sdk",
+            // dueDate: null,
+            // priority: null
+        }
+    ];
 }
 
 const defaultInitialState: TTask[] = [];

@@ -4,13 +4,11 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export const initBoardStore = (): TBoard[] => {
     return [
-        // {
-        //     boardDescription: undefined,
-        //     boardId: "86e27dda-e25b-4f80-9cc0-42b5c02d742e",
-        //     boardTitle: "Test board",
-        //     userId:"50fc6576-e81d-4c85-b08b-a834f32c6812",
-        // }
-    ]
+        {boardId: 'b-0', boardTitle: "TaskFlow", boardDescription: "test board one"},
+        {boardId: 'b-1', boardTitle: "StackIntech", boardDescription: "test board two"},
+        
+        {boardId: 'b-2', boardTitle: "University", boardDescription: "test board three"},
+    ];
 }
 
 const supabase = createClientComponentClient();
@@ -57,7 +55,12 @@ export const createBoardStore = (
                         if (error) {
                             throw new Error(error.message);
                         }
-                        console.log(boards);
+                        const newData = boards.map((board) => {
+                            return {
+                                boardId: board.boardId,
+                                board: board.boardId,
+                            }
+                        })
                         // set(({ boards: boards }));
                     } catch (err) {
                         console.error("Error fetching boards", err);
