@@ -129,8 +129,7 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
   });
 
   const genAI = new GoogleGenerativeAI(
-    // "AIzaSyBUgNqU1qSH1DJe2lX-mQQMzzSpRWpX0mw",
-    "AIzaSyAJ4GwR6iBLURE7_Pc_IPYb47o8Z06MZ9Q",
+    "AIzaSyBUgNqU1qSH1DJe2lX-mQQMzzSpRWpX0mw",
   );
   const generationConfig = {
     temperature: 1,
@@ -230,14 +229,6 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
           return newTaskId;
         },
       );
-      const userTask = tasks.filter(
-        ({ columnId, taskId }: TTask) =>
-          promptResultId.columnIds.some((id) => id === columnId) &&
-          promptResultId.taskIds.every((id) => id !== taskId),
-      );
-      console.log("%cUSERTASKS:", "color: lightblue; font-weight: bold");
-      console.table(userTask.map(({ columnId, taskId, taskTitle }) => ({ columnId, taskId, taskTitle })));
-
       dispatch({ type: "RESET", payload: initialPromptResultIds });
       dispatch({
         type: "SET_IDS",
