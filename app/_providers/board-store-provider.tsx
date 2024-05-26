@@ -3,6 +3,7 @@
 import { type ReactNode, createContext, useRef, useContext } from 'react'
 import { type StoreApi, useStore } from 'zustand'
 import { createBoardStore, initBoardStore } from '../_stores/boardStore';
+import { useState, useEffect } from 'react';
 
 // ! If there is an error will be the type down here
 export const BoardStoreContext = createContext<StoreApi<TBoardStore> | null>(
@@ -17,9 +18,19 @@ export const BoardStoreProvider = ({
     children,
 }: BoardStoreProviderProps) => {
     const storeRef = useRef<StoreApi<TBoardStore>>()
+    const [isMounted, setIsMounted] = useState(false);
+
     if (!storeRef.current) {
         // storeRef.current = useBoardStore(initBoardStore())
         storeRef.current = createBoardStore(initBoardStore())
+    }
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return null; // Avoid rendering until the component is mounted
     }
 
     return (

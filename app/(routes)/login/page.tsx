@@ -28,11 +28,17 @@ import { Toaster } from "@/components/ui/sonner";
 import { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useBoardStore } from "@/app/_providers/board-store-provider";
+import { useTaskStore } from "@/app/_providers/task-store-provider";
+import { useColumnStore } from "@/app/_providers/column-store-provider";
+import { useUserStore } from "@/app/_providers/user-store-provider";
 
 const LoginPage = () => {
 
     const [isLoading, setLoading] = useState(false);
     const fetchBoards = useBoardStore(actions => actions.fetchBoards);
+    const fetchColumns = useColumnStore(actions => actions.fetchColumns);
+    const fetchTasks = useTaskStore(actions => actions.fetchTasks);
+    const fetchUser = useUserStore(actions => actions.fetchUser);
     const supabase = createClientComponentClient();
 
     const route = useRouter();
@@ -53,6 +59,13 @@ const LoginPage = () => {
         return result;
     }
 
+    const getUserData = async (userId: string) => {
+        fetchUser(userId);
+        const boardIds = await fetchBoards(userId);
+        const columnIds = await fetchColumns(boardIds!);
+        fetchTasks(columnIds!);
+    }
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const result = await handleLogin(values.email, values.password);
         setLoading(false);
@@ -62,7 +75,7 @@ const LoginPage = () => {
             });
             return;
         }
-        fetchBoards(result.data.user.id);
+        await getUserData(result.data.user.id);
         route.push("/home");
     }
 
@@ -110,7 +123,7 @@ const LoginPage = () => {
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="**********" {...field} />
+                                            <Input placeholder="**********"  {...field} />
                                         </FormControl>
                                         <FormDescription
                                             className="text-right font-bold text-c-one underline cursor-pointer"

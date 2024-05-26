@@ -36,6 +36,7 @@ type TTaskActions = {
     addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId?: string) => void;
     deleteTask: (taskId: string) => void;
     editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
+    fetchTasks: (columnIds: string[]) => void;
 }
 
 type TColumnActions = {
@@ -43,6 +44,7 @@ type TColumnActions = {
     deleteColumn: (columnId: string) => void;
     editColumn: (columnId: string, columnTitle: string) => void;
     dragColumn: (columnId: string | null) => void;
+    fetchColumns: (boardIds: string[]) => Promise<string[] | undefined>;
 }
 
 type TBoardActions = {
@@ -50,12 +52,13 @@ type TBoardActions = {
     deleteBoard: (boardId: string) => void;
     editBoard: (boardId: string, boardTitle: string, boardDescription?: string) => void;
     setSearchTerm: (term: string) => void;
-    fetchBoards: (userId) => void;
+    fetchBoards: (userId: string) => Promise<string[] | undefined>;
 }
 
 type TUserActions = {
     addUser: (userId: string, username: string, userEmail: string, userPassword: string) => void;
     removeUser: (userId: string) => void;
+    fetchUser: (userId: string) => void;
 }
 
 type TUserState = {

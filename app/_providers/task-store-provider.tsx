@@ -3,6 +3,7 @@
 import { type ReactNode, createContext, useRef, useContext } from 'react'
 import { type StoreApi, useStore } from 'zustand'
 import { createTaskStore, initTaskStore } from '../_stores/taskStore';
+import { useState, useEffect } from 'react';
 
 // ! If there is an error will be the type down here
 export const TaskStoreContext = createContext<StoreApi<TTaskStore> | null>(
@@ -17,9 +18,19 @@ export const TaskStoreProvider = ({
     children,
 }: TaskStoreProviderProps) => {
     const storeRef = useRef<StoreApi<TTaskStore>>()
+    const [isMounted, setIsMounted] = useState(false);
+
     if (!storeRef.current) {
         // storeRef.current = useBoardStore(initBoardStore())
         storeRef.current = createTaskStore(initTaskStore())
+    }
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return null; // Avoid rendering until the component is mounted
     }
 
     return (

@@ -3,7 +3,7 @@ import CreateBoardBtn_home from "./CreateBoardBtn_home";
 import { useBoardStore } from "../_providers/board-store-provider";
 import BoardCard from "./BoardCard";
 import { Input } from "@/components/ui/input";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Search } from "lucide-react";
 import { motion } from "framer-motion"
 const BoardsContainer = () => {
@@ -18,6 +18,9 @@ const BoardsContainer = () => {
         boards.filter(({ boardTitle }: TBoard) =>
             boardTitle.toLowerCase().includes(searchTerm.toLowerCase())
         ), [boards, searchTerm]);
+
+    console.log("boardContainer bords", boards);
+    console.log("boardContainer filtred boards", filteredBoards);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
