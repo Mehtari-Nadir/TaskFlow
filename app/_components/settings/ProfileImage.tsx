@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Camera, X } from "lucide-react";
 
-const DEFAULT_AVATAR = "/public/assets/default-avatar.svg";
+const DEFAULT_AVATAR = "/assets/default-avatar.svg";
 
 type ProfileImageProps = {
   profileImage?: string;
