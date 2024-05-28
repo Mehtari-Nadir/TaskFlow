@@ -5,8 +5,8 @@ import BoardCard from "./BoardCard";
 import { Input } from "@/components/ui/input";
 import { useEffect, useMemo } from "react";
 import { Search } from "lucide-react";
-import { motion } from "framer-motion"
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
+
 const BoardsContainer = () => {
 
     const { boards, searchTerm, setSearchTerm } = useBoardStore(state => ({
