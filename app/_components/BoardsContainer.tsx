@@ -19,9 +19,6 @@ const BoardsContainer = () => {
             boardTitle.toLowerCase().includes(searchTerm.toLowerCase())
         ), [boards, searchTerm]);
 
-    console.log("boardContainer bords", boards);
-    console.log("boardContainer filtred boards", filteredBoards);
-
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
 
     return (

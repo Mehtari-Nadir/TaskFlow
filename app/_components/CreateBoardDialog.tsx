@@ -24,6 +24,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"
 
 import { useBoardStore } from "../_providers/board-store-provider";
+import { useUserStore } from "../_providers/user-store-provider";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const createBoardFormSchema = z.object({
     boardName: z.string().min(2, { message: "The board name must be at least 2 characters long." }).max(25, { message: "The board name must be no more than 25 characters long." }),
@@ -33,6 +35,9 @@ const createBoardFormSchema = z.object({
 const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const addBoard = useBoardStore(actions => actions.addBoard);
+    const user = useUserStore(state => state.users);
+
+    const supabase = createClientComponentClient();
 
     const form = useForm<z.infer<typeof createBoardFormSchema>>({
         resolver: zodResolver(createBoardFormSchema),
@@ -42,8 +47,16 @@ const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Di
         },
     })
 
-    function onSubmit(values: z.infer<typeof createBoardFormSchema>) {
-        addBoard(values.boardName, values.boardDescription);
+    async function onSubmit(values: z.infer<typeof createBoardFormSchema>) {
+        const boardId = addBoard(values.boardName, values.boardDescription);
+        const { data, error } = await supabase
+            .from("boards")
+            .insert([{
+                boardId: boardId,
+                boardTitle: values.boardName,
+                boardDescription: values.boardDescription,
+                userId: user[0].userId
+            }])
         form.reset();
         setOpen(false);
     }
