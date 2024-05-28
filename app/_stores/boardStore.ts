@@ -30,9 +30,11 @@ export const createBoardStore = (
                 boards: [...initState],
                 searchTerm: '',
                 addBoard: (boardTitle: string, boardDescription?: string) => {
+                    const newBoardId = uuidv4();
                     set((state) => ({
-                        boards: [...state.boards, { boardId: uuidv4(), boardTitle, boardDescription }]
+                        boards: [...state.boards, { boardId: newBoardId, boardTitle, boardDescription }]
                     }))
+                    return newBoardId;
                 },
                 deleteBoard: (boardId: string) => {
                     set((state) => ({

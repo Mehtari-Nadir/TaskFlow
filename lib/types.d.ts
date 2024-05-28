@@ -48,7 +48,7 @@ type TColumnActions = {
 }
 
 type TBoardActions = {
-    addBoard: (boardTitle: string, boardDescription?: string) => void;
+    addBoard: (boardTitle: string, boardDescription?: string) => string;
     deleteBoard: (boardId: string) => void;
     editBoard: (boardId: string, boardTitle: string, boardDescription?: string) => void;
     setSearchTerm: (term: string) => void;

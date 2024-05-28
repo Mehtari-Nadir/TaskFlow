@@ -2,7 +2,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import { useState } from "react";
 import { useBoardStore } from "../_providers/board-store-provider";
 import EditBoardDialog from "./EditBoardDialog";
 import { toast } from "sonner";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const BoardCardMenu = (
     {
@@ -25,6 +25,7 @@ const BoardCardMenu = (
 
     const [open, setOpen] = useState<boolean>(false);
     const deleteBoard = useBoardStore(actions => actions.deleteBoard);
+    const supabase = createClientComponentClient();
 
     return (
         <>
@@ -45,8 +46,12 @@ const BoardCardMenu = (
                                 description: "All Columns and tasks in this board will be deleted.",
                                 action: {
                                     label: "Delete",
-                                    onClick: () => {
+                                    onClick: async () => {
                                         deleteBoard(boardId);
+                                        const { data, error } = await supabase
+                                            .from("boards")
+                                            .delete()
+                                            .eq("boardId", boardId)
                                     }
                                 },
                             })
