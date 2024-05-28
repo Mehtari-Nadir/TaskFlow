@@ -14,13 +14,12 @@ const StackedAvatars = () => {
 
     return (
         <div className="flex -space-x-2 rtl:space-x-reverse">
-            {users.map((value, index) => {
+            {users.map((user) => {
                 return (
-                    <Avatar key={index} className="cursor-pointer w-7 h-7">
+                    <Avatar key={user.userId} className="cursor-pointer w-7 h-7">
                         <AvatarImage
-                            src={value.profilePic}
+                            src={user.profilePic}
                             alt="@shadcn"
-
                         />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>

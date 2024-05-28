@@ -10,7 +10,6 @@ import { useState } from "react";
 import EditTaskDialog from "./EditTaskDialog";
 import { toast } from "sonner";
 import { useTaskStore } from "../_providers/task-store-provider";
-import { Button } from "@/components/ui/button";
 
 enum Priority {
     High = 'High',
@@ -41,23 +40,6 @@ const Task = (
         [Priority.Medium]: '#FF9900', // Orange
         [Priority.Low]: '#33CC33', // Green
     };
-    const handleDelete = () =>
-        toast.warning("Delete This task?", {
-            description: "Deleting this task will permanently remove it from this board.",
-            action: (
-                <div className="flex justify-end">
-                    <Button
-                        className="px-3 bg-red-400 text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-red-400 "
-                        onClick={() => {
-                            deleteTask(taskId);
-                            toast.dismiss();
-                        }}
-                    >
-                        Delete
-                    </Button>
-                </div>
-            ),
-        })
 
     return (
         <ContextMenu>
@@ -90,7 +72,17 @@ const Task = (
                     Edit
                 </ContextMenuItem>
                 <ContextMenuItem className="text-red-500"
-                    onClick={handleDelete}
+                    onClick={() => {
+                        toast.warning("Delete This task?", {
+                            description: "Deleting this task will permanently remove it from this board.",
+                            action: {
+                                label: "Delete",
+                                onClick: () => {
+                                    deleteTask(taskId);
+                                }
+                            },
+                        })
+                    }}
                 >
                     Delete
                 </ContextMenuItem>

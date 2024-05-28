@@ -19,22 +19,6 @@ const ColumnMenuBtn = ({ columnId, columnTitle }: { columnId: string, columnTitl
     const [openTaskDialog, setTaskDialog] = useState(false);
 
     const deleteColumn = useColumnStore(actions => actions.deleteColumn);
-    const handleDelete = () =>
-        toast.warning("Delete This column?", {
-            description: "All tasks in this column will be deleted.",
-            action: (
-                <Button
-                    className="px-3 py-2 bg-red-400 text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-red-400 "
-                    onClick={() => {
-                        deleteColumn(columnId);
-                        toast.dismiss();
-                    }}
-                >
-                    Delete
-                </Button>
-            )
-        })
-
 
     return (
         <>
@@ -54,7 +38,17 @@ const ColumnMenuBtn = ({ columnId, columnTitle }: { columnId: string, columnTitl
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         className="text-red-500"
-                        onClick={handleDelete}
+                        onClick={() => {
+                            toast.warning("Delete This column?", {
+                                description: "All tasks in this column will be deleted.",
+                                action: {
+                                    label: "Delete",
+                                    onClick: () => {
+                                        deleteColumn(columnId);
+                                    }
+                                },
+                            })
+                        }}
                     >
                         Delete Column
                     </DropdownMenuItem>

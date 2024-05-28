@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import Column from "./Column";
 import React from "react";
 
-const Columns = ({boardId}: {boardId: string}) => {
+const Columns = ({ boardId }: { boardId: string }) => {
 
     const columns = useColumnStore(state => state.columns);
 
@@ -20,9 +20,9 @@ const Columns = ({boardId}: {boardId: string}) => {
 
     return (
         <SortableContext items={columnsIds}>
-            {filtredColumns.map((column, index) => {
+            {filtredColumns.map((column) => {
                 return (
-                    <Column key={index} {...column} />
+                    <Column key={`${column.columnId}-${column.boardId}`} {...column} />
                 );
             })}
         </SortableContext>
