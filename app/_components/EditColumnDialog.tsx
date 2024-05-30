@@ -13,16 +13,19 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-
 import { useColumnStore } from "../_providers/column-store-provider"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
 
-const createColumnSchema = z.object({
-    columnTitle: z.string().min(2, { message: "minimum 2 chars" }).max(20, { message: "maximum 20 chars" }),
-})
+const editColumnSchema = z.object({
+    columnTitle: z.string()
+        .min(2, { message: "The column title must be at least 2 characters long." })
+        .max(20, { message: "The column title must be no more than 20 characters long." })
+});
+type editColumnForm = z.infer<typeof editColumnSchema>;
 
 const EditColumnDialog = (
     {
@@ -37,21 +40,29 @@ const EditColumnDialog = (
         columnTitle: string,
     }
 ) => {
-
     const editColumn = useColumnStore(actions => actions.editColumn);
-
-    const form = useForm<z.infer<typeof createColumnSchema>>({
-        resolver: zodResolver(createColumnSchema),
+    const supabase = createClientComponentClient();
+    const form = useForm<editColumnForm>({
+        resolver: zodResolver(editColumnSchema),
         defaultValues: {
             columnTitle: columnTitle,
         },
     })
-
-    function onSubmit(values: z.infer<typeof createColumnSchema>) {
-        editColumn(columnId, values.columnTitle);
-        form.reset();
-        setColumnDialog(false);
-    }
+    const onSubmit = async ({ columnTitle }: editColumnForm) => {
+        try {
+            editColumn(columnId, columnTitle);
+            const { error } = await supabase
+                .from("columns")
+                .update({ columnTitle })
+                .eq("columnId", columnId);
+            if (error) throw error;
+        } catch (error) {
+            toast.error("An error occurred while updating the column. Please try again.");
+        } finally {
+            form.reset();
+            setColumnDialog(false);
+        }
+    };
 
     return (
         <Dialog open={openColumnDialog} onOpenChange={setColumnDialog}>
@@ -72,7 +83,10 @@ const EditColumnDialog = (
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Add Column</Button>
+                        <Button
+                            type="submit"
+                            className="px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
+                        >Save Column</Button>
                     </form>
                 </Form>
             </DialogContent>

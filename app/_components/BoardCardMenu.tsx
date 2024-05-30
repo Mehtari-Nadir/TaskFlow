@@ -42,16 +42,21 @@ const BoardCardMenu = (
                     <DropdownMenuItem
                         className="text-red-500"
                         onClick={() => {
-                            toast.warning("Dlete This board??", {
+                            toast.warning("Delete This board?", {
                                 description: "All Columns and tasks in this board will be deleted.",
                                 action: {
                                     label: "Delete",
                                     onClick: async () => {
-                                        deleteBoard(boardId);
-                                        const { data, error } = await supabase
-                                            .from("boards")
-                                            .delete()
-                                            .eq("boardId", boardId)
+                                        try {
+                                            deleteBoard(boardId);
+                                            const { error } = await supabase
+                                                .from('boards')
+                                                .delete()
+                                                .eq('boardId', boardId);
+                                            if (error) throw error;
+                                        } catch (error) {
+                                            toast.error("Error deleting board");
+                                        }
                                     }
                                 },
                             })

@@ -1,5 +1,4 @@
 import { createStore } from "zustand";
-import { v4 as uuidv4 } from "uuid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { persist } from "zustand/middleware";
 
@@ -20,10 +19,35 @@ export const createUserStore = (
         persist(
             (set) => ({
                 users: [...initState],
-                addUser: (userId: string, username: string, userEmail: string, userPassword: string) => {
+                addUser: (
+                    userId: string,
+                    username: string,
+                    userEmail: string,
+                    userPassword: string,
+                    userPic: string = "/assets/default-avatar.svg"
+                ) => {
                     set((state) => ({
-                        users: [...state.users, { userId, username, userEmail, userPassword }]
-                    }))
+                        users: [
+                            ...state.users,
+                            { userId, username, userEmail, userPassword, userPic },
+                        ],
+                    }));
+                },
+                updateUser: (
+                    userId: string,
+                    username: string,
+                    userEmail: string,
+                    userPassword: string,
+                    userPic: string = "/assets/default-avatar.svg"
+                ) => {
+                    set((state) => {
+                        const updatedUsers = state.users.map((user: TUser) =>
+                            user.userId === userId
+                                ? { userId, username, userEmail, userPassword, userPic }
+                                : user
+                        );
+                        return { users: updatedUsers };
+                    });
                 },
                 removeUser: (userId: string) => {
                     set((state) => ({
@@ -36,16 +60,19 @@ export const createUserStore = (
                             .from('users')
                             .select('*')
                             .eq('userId', userId);
-
                         if (error) {
                             throw new Error(error.message);
                         }
-
-                        // set((state) => ({
-                        //     users: [...state.users, ...user]
-                        // }))
-                        set({users: user});
-
+                        const fetchedUsers: TUser[] = user.map(
+                            ({ userId, userEmail, userPassword, username, userPic }: TUser) => ({
+                                userId,
+                                username,
+                                userEmail,
+                                userPassword,
+                                userPic: userPic || undefined,
+                            })
+                        );
+                        set({ users: fetchedUsers });
                     } catch (error) {
                         console.log("error fetching user ", error);
                     }

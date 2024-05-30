@@ -16,8 +16,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const ProfileAvatar = ({ image_url }: { image_url: string }) => {
+type ProfileAvatarProps = Omit<TUser, "userId" | "userPassword">;
 
+const ProfileAvatar = ({ userEmail, username, userPic }: ProfileAvatarProps) => {
     const supabase = createClientComponentClient();
     const router = useRouter();
 
@@ -25,24 +26,24 @@ const ProfileAvatar = ({ image_url }: { image_url: string }) => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
-                    <AvatarImage src={image_url} alt="@shadcn" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage src={userPic} alt={`@${username}`} />
+                    <AvatarFallback>{`${username?.slice(0, 2).toUpperCase()}`}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent>
                 <DropdownMenuLabel className="flex gap-x-3">
                     <Avatar>
-                        <AvatarImage src={image_url} alt="@shadcn" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarImage src={userPic} alt={`@${username}`} />
+                        <AvatarFallback>{`${username?.slice(0, 2).toUpperCase()}`}</AvatarFallback>
                     </Avatar>
-                    <div>
-                        <h2>Nadir</h2>
-                        <h4>nadir@gmail.com</h4>
+                    <div className="flex flex-col gap-1.5">
+                        <h2>{`@${username}`}</h2>
+                        <h2 className="text-gray-500 text-sm">{userEmail}</h2>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <Link href={"/settings"}>
+                    <Link href="/home/settings">
                         <DropdownMenuItem>
                             Settings
                         </DropdownMenuItem>

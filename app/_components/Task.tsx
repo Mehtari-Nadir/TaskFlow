@@ -10,6 +10,7 @@ import { useState } from "react";
 import EditTaskDialog from "./EditTaskDialog";
 import { toast } from "sonner";
 import { useTaskStore } from "../_providers/task-store-provider";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 enum Priority {
     High = 'High',
@@ -31,15 +32,14 @@ const Task = (
         dueDate?: Date,
         priority?: Priority
     }) => {
-
     const [openTaskDialog, setTaskDialog] = useState(false);
     const deleteTask = useTaskStore(actions => actions.deleteTask);
-
     const PriorityColors: { [key in Priority]: string } = {
         [Priority.High]: '#FF0000', // Red
         [Priority.Medium]: '#FF9900', // Orange
         [Priority.Low]: '#33CC33', // Green
     };
+    const supabase = createClientComponentClient();
 
     return (
         <ContextMenu>
@@ -47,23 +47,21 @@ const Task = (
                 <div
                     className={`
                         relative flex items-center justify-between
-                        rounded-lg bg-background px-3
-                        py-2 max-h-[5rem]
+                        rounded-lg bg-background px-3 py-2
                         border-[1px] hover:border-c-one
                     `}
                 >
                     <div className="w-full overflow-hidden flex flex-col gap-y-1">
-                        <h3 className='truncate font-medium text-black dark:text-white'>{taskTitle}</h3>
+                        <h3 className='truncate font-medium text-black dark:text-white text-balance'>{taskTitle}</h3>
                         <div className="flex items-center justify-between">
                             <div className="flex gap-x-2">
-                                {dueDate &&
+                                {!!dueDate &&
                                     <Badge variant="default">
-                                        {dueDate.getDate() + " " + dueDate.toLocaleString('default', { month: 'long' })}
+                                        {new Date(dueDate)?.getDate() + " " + new Date(dueDate)?.toLocaleString('default', { month: 'long' })}
                                     </Badge>
                                 }
                                 {priority && <Badge style={{ backgroundColor: PriorityColors[priority] }}>{priority}</Badge>}
                             </div>
-                            <StackedAvatars />
                         </div>
                     </div>
                 </div>
@@ -74,13 +72,23 @@ const Task = (
                 </ContextMenuItem>
                 <ContextMenuItem className="text-red-500"
                     onClick={() => {
-                        toast.warning("Dlete This task??", {
+                        toast.warning("Delete This task?", {
+                            description: "Deleting this task will permanently remove it from this board.",
                             action: {
                                 label: "Delete",
-                                onClick: () => {
-                                    deleteTask(taskId);
-                                }
-                            },
+                                onClick: async () => {
+                                    try {
+                                        deleteTask(taskId);
+                                        const { error } = await supabase
+                                            .from('tasks')
+                                            .delete()
+                                            .eq('taskId', taskId);
+                                        if (error) throw error;
+                                    } catch (error) {
+                                        toast.error("Failed to delete task");
+                                    }
+                                },
+                            }
                         })
                     }}
                 >

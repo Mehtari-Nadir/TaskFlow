@@ -24,10 +24,11 @@ export const createColumnStore = (
             (set) => ({
                 columns: [...initState],
                 draggedColumn: null,
-                addColumn: (boardId: string, columnTitle: string) => {
+                addColumn: (boardId: string, columnTitle: string, columnId: string = uuidv4()) => {
                     set((state) => ({
-                        columns: [...state.columns, { boardId, columnTitle, columnId: uuidv4() }],
+                        columns: [...state.columns, { boardId, columnTitle, columnId }],
                     }));
+                    return columnId;
                 },
                 deleteColumn: (columnId: string) => {
                     set((state) => ({
@@ -57,7 +58,7 @@ export const createColumnStore = (
                             throw new Error(error.message);
                         }
 
-                        set({columns: columns});
+                        set({ columns: columns });
 
                         const columnIds: string[] = columns.map(column => column.columnId);
                         return columnIds;

@@ -1,6 +1,6 @@
 import BoardsContainer from "@/app/_components/BoardsContainer";
 
-const homePage = () => {
+const HomePage = () => {
     return (
         <main className="w-full">
             <BoardsContainer />
@@ -8,4 +8,4 @@ const homePage = () => {
     );
 }
 
-export default homePage;
+export default HomePage;

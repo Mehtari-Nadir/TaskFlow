@@ -17,10 +17,10 @@ const NavbarMenu = () => {
             <MenubarMenu>
                 <MenubarTrigger className="px-4 py-2 cursor-pointer font-bold" >Boards</MenubarTrigger>
                 <MenubarContent>
-                    {boards.map((value, index) => {
+                    {boards.map((board) => {
                         return (
-                            <Link key={index} href={`/home/board/${value.boardId}`}>
-                                <MenubarItem>{value.boardTitle}</MenubarItem>
+                            <Link key={board.boardId} href={`/home/board/${board.boardId}`}>
+                                <MenubarItem>{board.boardTitle}</MenubarItem>
                             </Link>
                         );
                     })}
