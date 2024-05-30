@@ -29,7 +29,7 @@ const BoardsContainer = () => {
                 <Search size={20} className="absolute right-0 top-1/2 transform -translate-y-1/2 mr-3" />
             </div>
             <div className="w-full flex items-center justify-center">
-                <motion.div layout className="w-full flex items-start justify-start max-md:justify-center gap-3 flex-wrap p-6">
+                <motion.div layout className="w-full flex items-start justify-start max-md:justify-center gap-4 flex-wrap p-6">
                     {
                         filteredBoards.map((board: TBoard) => {
                             return (

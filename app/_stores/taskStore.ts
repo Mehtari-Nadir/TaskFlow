@@ -35,6 +35,7 @@ export const createTaskStore = (
         persist(
             (set) => ({
                 tasks: [...initState],
+                draggedTask: null,
                 addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId: string = uuidv4()) => {
                     set((state) => ({
                         tasks: [...state.tasks, { taskId, taskTitle, taskDescription, columnId, dueDate, priority }]
@@ -86,6 +87,25 @@ export const createTaskStore = (
 
                     } catch (error) {
                         console.log("error fetching tasks ", error);
+                    }
+                },
+                setDraggedTask: (taskId: string | null) => {
+                    set({ draggedTask: taskId });
+                },
+                updateTask: async (taskId: string, columnId: string) => {
+                    set(state => ({
+                        tasks: state.tasks.map((task) => {
+                            return task.taskId == taskId ? { ...task, columnId } : task;
+                        })
+                    }));
+                    try {
+                        const { error } = await supabase
+                            .from('tasks')
+                            .update({ columnId })
+                            .eq('taskId', taskId);
+                        if (error) throw error;
+                    } catch (error) {
+                        console.log("error updating task ", error);
                     }
                 }
             }),
