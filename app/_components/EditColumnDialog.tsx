@@ -13,18 +13,19 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-
 import { useColumnStore } from "../_providers/column-store-provider"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
 
 const editColumnSchema = z.object({
     columnTitle: z.string()
         .min(2, { message: "The column title must be at least 2 characters long." })
         .max(20, { message: "The column title must be no more than 20 characters long." })
-})
+});
+type editColumnForm = z.infer<typeof editColumnSchema>;
 
 const EditColumnDialog = (
     {
@@ -39,21 +40,29 @@ const EditColumnDialog = (
         columnTitle: string,
     }
 ) => {
-
     const editColumn = useColumnStore(actions => actions.editColumn);
-
-    const form = useForm<z.infer<typeof editColumnSchema>>({
+    const supabase = createClientComponentClient();
+    const form = useForm<editColumnForm>({
         resolver: zodResolver(editColumnSchema),
         defaultValues: {
             columnTitle: columnTitle,
         },
     })
-
-    function onSubmit(values: z.infer<typeof editColumnSchema>) {
-        editColumn(columnId, values.columnTitle);
-        form.reset();
-        setColumnDialog(false);
-    }
+    const onSubmit = async ({ columnTitle }: editColumnForm) => {
+        try {
+            editColumn(columnId, columnTitle);
+            const { error } = await supabase
+                .from("columns")
+                .update({ columnTitle })
+                .eq("columnId", columnId);
+            if (error) throw error;
+        } catch (error) {
+            toast.error("An error occurred while updating the column. Please try again.");
+        } finally {
+            form.reset();
+            setColumnDialog(false);
+        }
+    };
 
     return (
         <Dialog open={openColumnDialog} onOpenChange={setColumnDialog}>

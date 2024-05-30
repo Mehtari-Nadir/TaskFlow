@@ -25,6 +25,7 @@ import { useTaskStore } from "../_providers/task-store-provider";
 import { toast } from "sonner";
 import SparkleButton from "@/components/ui/sparkle-button";
 import { v4 as uuidv4 } from "uuid";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const aiPromptSchema = z.object({
   prompt: z.string().min(10, {
@@ -99,7 +100,7 @@ const promptResultIdsReducer: React.Reducer<
   PromptResultIds,
   PromptResultIdsActions
 > = (state: PromptResultIds, { type, payload }: PromptResultIdsActions) =>
-    type === "SET_IDS" || type === "RESET" ? { ...payload } : state;
+  type === "SET_IDS" || type === "RESET" ? { ...payload } : state;
 
 const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -127,7 +128,7 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
       prompt: "",
     },
   });
-
+  const supabase = createClientComponentClient();
   const genAI = new GoogleGenerativeAI(
     "AIzaSyBUgNqU1qSH1DJe2lX-mQQMzzSpRWpX0mw",
   );
@@ -203,31 +204,66 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
       );
       const parsedData = parseData(data);
       if (!parsedData) return;
-      promptResultId.taskIds.forEach(deleteTask);
-      promptResultId.columnIds.forEach(deleteColumn);
+      promptResultId.taskIds.forEach(async (taskId: string) => {
+        deleteTask(taskId);
+        const { error } = await supabase
+          .from("tasks")
+          .delete()
+          .eq("taskId", taskId);
+        if (error) throw error;
+      });
+      promptResultId.columnIds.forEach(async (columnId: string) => {
+        deleteColumn(columnId);
+        const { error } = await supabase
+          .from("columns")
+          .delete()
+          .eq("columnId", columnId);
+        if (error) throw error;
+      });
       const { tasks: promptResultTasks, columns: promptResultColumns } =
         promptResult.parse(parsedData);
-      const newColumnIds = promptResultColumns.map(
-        ({ columnTitle }: ColumnResponse) => {
+      const newColumnIds = await Promise.all(
+        promptResultColumns.map(async ({ columnTitle }: ColumnResponse) => {
           const newColumnId = uuidv4();
           addColumn(boardId, columnTitle, newColumnId);
+          const { error } = await supabase.from("columns").upsert([
+            {
+              columnId: newColumnId,
+              columnTitle,
+              boardId,
+            },
+          ]);
+          if (error) throw error;
           return newColumnId;
-        },
+        }),
       );
-      const newTaskIds = promptResultTasks.map(
-        ({ taskTitle, taskDescription }: TaskResponse) => {
-          const newTaskId = uuidv4();
-          const columnId = newColumnIds[0];
-          addTask(
-            columnId,
-            taskTitle,
-            taskDescription,
-            undefined,
-            undefined,
-            newTaskId,
-          );
-          return newTaskId;
-        },
+      const newTaskIds = await Promise.all(
+        promptResultTasks.map(
+          async ({ taskTitle, taskDescription }: TaskResponse) => {
+            const newTaskId = uuidv4();
+            const columnId = newColumnIds[0];
+            addTask(
+              columnId,
+              taskTitle,
+              taskDescription,
+              undefined,
+              undefined,
+              newTaskId,
+            );
+            const { error } = await supabase.from("tasks").upsert([
+              {
+                taskId: newTaskId,
+                taskTitle,
+                taskDescription: taskDescription || null,
+                dueDate: null,
+                priority: null,
+                columnId,
+              },
+            ]);
+            if (error) throw error;
+            return newTaskId;
+          },
+        ),
       );
       dispatch({ type: "RESET", payload: initialPromptResultIds });
       dispatch({
@@ -243,12 +279,20 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
     }
   };
   console.log("%cSTORE-COLUMNS:", "color: lightblue; font-weight: bold");
-  console.table(columns.map(({ columnId, columnTitle }) => ({ columnId, columnTitle })));
+  console.table(
+    columns.map(({ columnId, columnTitle }) => ({ columnId, columnTitle })),
+  );
 
   console.log("%cSTORE-TASKS:", "color: lightblue; font-weight: bold");
-  console.table(tasks.map(({ columnId, taskId, taskTitle }) => ({ columnId, taskId, taskTitle })));
+  console.table(
+    tasks.map(({ columnId, taskId, taskTitle }) => ({
+      columnId,
+      taskId,
+      taskTitle,
+    })),
+  );
   return (
-    <Dialog open={open} onOpenChange={isPending ? () => { } : setOpen}>
+    <Dialog open={open} onOpenChange={isPending ? () => {} : setOpen}>
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

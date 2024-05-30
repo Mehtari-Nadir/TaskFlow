@@ -9,12 +9,14 @@ type TUser = {
     username: string;
     userEmail: string;
     userPassword: string;
+    userPic?: string;
 }
 
 type TBoard = {
     boardId: string;
     boardTitle: string;
     boardDescription?: string;
+    boardColor?: string[];
 }
 
 type TColumn = {
@@ -33,14 +35,14 @@ type TTask = {
 }
 
 type TTaskActions = {
-    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId?: string) => void;
+    addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId?: string) => string;
     deleteTask: (taskId: string) => void;
     editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
     fetchTasks: (columnIds: string[]) => void;
 }
 
 type TColumnActions = {
-    addColumn: (boardId: string, columnTitle: string, columnId?: string) => void;
+    addColumn: (boardId: string, columnTitle: string, columnId?: string) => string;
     deleteColumn: (columnId: string) => void;
     editColumn: (columnId: string, columnTitle: string) => void;
     dragColumn: (columnId: string | null) => void;
@@ -48,15 +50,16 @@ type TColumnActions = {
 }
 
 type TBoardActions = {
-    addBoard: (boardTitle: string, boardDescription?: string) => string;
+    addBoard: (boardTitle: string, boardDescription?: string, boardColor?: string[]) => string;
     deleteBoard: (boardId: string) => void;
-    editBoard: (boardId: string, boardTitle: string, boardDescription?: string) => void;
+    editBoard: (boardId: string, boardTitle: string, boardDescription?: string, boardColor?: string[]) => void;
     setSearchTerm: (term: string) => void;
     fetchBoards: (userId: string) => Promise<string[] | undefined>;
 }
 
 type TUserActions = {
-    addUser: (userId: string, username: string, userEmail: string, userPassword: string) => void;
+    addUser: (userId: string, username: string, userEmail: string, userPassword: string, userPic?: string) => void;
+    updateUser: (userId: string, username: string, userEmail: string, userPassword: string, userPic?: string) => void;
     removeUser: (userId: string) => void;
     fetchUser: (userId: string) => void;
 }
@@ -74,7 +77,7 @@ type TColumnState = {
     draggedColumn: string | null;
 }
 
-type TBoardState = { boards: TBoard[], searchTerm: string}
+type TBoardState = { boards: TBoard[], searchTerm: string }
 type TUserStore = TUserState & TUserActions;
 type TTaskStore = TTaskState & TTaskActions;
 type TColumnStore = TColumnState & TColumnActions;

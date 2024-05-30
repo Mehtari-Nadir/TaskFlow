@@ -35,6 +35,8 @@ import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { useTaskStore } from "../_providers/task-store-provider";
 import { Plus } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
 
 enum Priority {
     High = 'High',
@@ -51,7 +53,8 @@ const createTaskSchema = z.object({
         .optional(),
     dueDate: z.date().optional(),
     priority: z.nativeEnum(Priority).optional(),
-})
+});
+type createTaskForm = z.infer<typeof createTaskSchema>;
 
 const AddTaskDialog = (
     {
@@ -64,21 +67,33 @@ const AddTaskDialog = (
         setTaskDialog: React.Dispatch<React.SetStateAction<boolean>>,
     }
 ) => {
-
     const addTask = useTaskStore(actions => actions.addTask);
-
-    const form = useForm<z.infer<typeof createTaskSchema>>({
+    const supabase = createClientComponentClient();
+    const form = useForm<createTaskForm>({
         resolver: zodResolver(createTaskSchema),
         defaultValues: {
             taskTitle: "",
             taskDescription: "",
         },
     })
-
-    function onSubmit(values: z.infer<typeof createTaskSchema>) {
-        addTask(columnId, values.taskTitle, values.taskDescription, values.dueDate, values.priority);
-        form.reset();
-        setTaskDialog(false);
+    const onSubmit = async ({ taskTitle, dueDate, priority, taskDescription }: createTaskForm) => {
+        try {
+            const newTaskId = addTask(columnId, taskTitle, taskDescription, dueDate, priority);
+            const { error } = await supabase.from("tasks").insert([{
+                taskId: newTaskId,
+                taskTitle,
+                taskDescription: taskDescription || null,
+                dueDate: dueDate || null,
+                priority: priority ? Priority[priority] : null,
+                columnId,
+            }]);
+            if (error) throw error;
+        } catch (error) {
+            toast.error("An error occurred while adding the task. Please try again.");
+        } finally {
+            form.reset();
+            setTaskDialog(false);
+        }
     }
 
     return (

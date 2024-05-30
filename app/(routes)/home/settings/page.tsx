@@ -41,6 +41,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
+import { useUserStore } from "@/app/_providers/user-store-provider";
+import { useRouter } from "next/navigation";
 
 const Settings = () => {
   const usernameForm = useForm<UsernameField>({
@@ -65,23 +69,98 @@ const Settings = () => {
     },
   });
 
-  // TODO: Implement functionality for handling username changes
-  const handleUsernameChange = ({ username }: UsernameField) => {
-    console.log(username);
-  };
+  const supabase = createClientComponentClient();
+  const { users, updateUser, removeUser } = useUserStore((state) => ({
+    users: state.users[0],
+    updateUser: state.updateUser,
+    removeUser: state.removeUser,
+  }));
+  const { userEmail, userId, userPassword, username, userPic } = users;
 
-  // TODO: Implement functionality for handling email changes
-  const handleEmailChange = ({ email }: EmailField) => {
-    console.log(email);
+  const handleUsernameChange = async ({
+    username: newUsername,
+  }: UsernameField) => {
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({ username: newUsername })
+        .eq("userId", userId);
+      updateUser(userId, newUsername, userEmail, userPassword, userPic);
+      if (error) throw error;
+      toast.success("Username updated successfully");
+    } catch (error) {
+      toast.error("An error occurred while updating your username");
+    } finally {
+      usernameForm.reset();
+    }
   };
-
-  // TODO: Implement functionality for handling password changes
-  const handlePasswordChange = ({ newPassword }: PasswordField) => {
-    console.log(newPassword);
+  const handleEmailChange = async ({ email }: EmailField) => {
+    if (email === userEmail) return toast.error("Email is already in use");
+    try {
+      const { error } = await supabase.auth.updateUser(
+        {
+          email,
+        },
+        { emailRedirectTo: `${window.location.origin}/home/settings` },
+      );
+      if (error) throw error;
+      const { error: updateError } = await supabase
+        .from("users")
+        .update({ userEmail: email })
+        .eq("userId", userId);
+      if (updateError) throw updateError;
+      updateUser(userId, username, email, userPassword, userPic);
+      toast.success(
+        "Email updated successfully. Please check your new email for confirmation.",
+      );
+    } catch (error) {
+      toast.error("An error occurred while updating your email");
+    } finally {
+      emailForm.reset();
+    }
   };
-  // TODO: Implement functionality for handling account deletion
-  const handleAccountDelete = () => {
-    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  const handlePasswordChange = async ({
+    password,
+    newPassword,
+  }: PasswordField) => {
+    if (password !== userPassword)
+      return toast.error("Current password is incorrect");
+    try {
+      const { error } = await supabase.auth.updateUser(
+        {
+          password: newPassword,
+        },
+        { emailRedirectTo: `${window.location.origin}/home/settings` },
+      );
+      if (error) throw error;
+      const { error: updateError } = await supabase
+        .from("users")
+        .update({ userPassword: newPassword })
+        .eq("userId", userId);
+      if (updateError) throw updateError;
+      updateUser(userId, username, userEmail, newPassword, userPic);
+      toast.success("Password updated successfully");
+    } catch (error) {
+      toast.error("An error occurred while updating your password");
+    } finally {
+      passwordForm.reset();
+    }
+  };
+  const router = useRouter();
+  const handleAccountDelete = async () => {
+    try {
+      await supabase.auth.signOut();
+      router.push("/login");
+      const { error } = await supabase
+        .from("users")
+        .delete()
+        .eq("userId", userId);
+      if (error) throw error;
+      toast.success("Account deleted successfully");
+      removeUser(userId);
+    } catch (error) {
+      toast.error("An error occurred while deleting your account");
+    }
   };
   useEffect(() => {
     const lenis = new Lenis();
@@ -97,11 +176,7 @@ const Settings = () => {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <SettingsHeader />
-      <ProfileCard
-        username="some_dummy_text"
-        email="info@taskflow.com"
-        profileImage="/assets/default-avatar.svg"
-      />
+      <ProfileCard {...users} />
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6">
           <div className="grid gap-6">

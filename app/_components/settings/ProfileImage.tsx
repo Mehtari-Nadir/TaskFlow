@@ -1,32 +1,60 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import { Camera, X } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
+import { useUserStore } from "@/app/_providers/user-store-provider";
 
 const DEFAULT_AVATAR = "/assets/default-avatar.svg";
 
-type ProfileImageProps = {
-  profileImage?: string;
-};
+const ProfileImage = ({
+  userId,
+  username,
+  userEmail,
+  userPassword,
+  userPic,
+}: TUser) => {
+  const supabase = createClientComponentClient();
+  const updateUser = useUserStore((state) => state.updateUser);
 
-const ProfileImage = ({ profileImage }: ProfileImageProps) => {
-  const [selectedImage, setSelectedImage] = useState(
-    profileImage || DEFAULT_AVATAR,
-  );
-
-  //TODO: Handle image upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) return;
-
+    e.preventDefault();
     const reader = new FileReader();
-    reader.onload = (event) => setSelectedImage(event.target?.result as string);
+    reader.onload = async (event) => {
+      const newProfilePic = event.target?.result as string;
+      try {
+        const { error } = await supabase
+          .from("users")
+          .update({
+            userPic: newProfilePic,
+          })
+          .eq("userId", userId);
+        updateUser(userId, username, userEmail, userPassword, newProfilePic);
+        if (error) throw error;
+        toast.success("Profile picture updated successfully.");
+      } catch (error) {
+        toast.error("Error updating profile picture.");
+      }
+    };
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  //TODO: Handle image removal
-  const handleImageRemoval = () => {
-    if (selectedImage === DEFAULT_AVATAR) return;
-    setSelectedImage(DEFAULT_AVATAR);
+  const handleImageRemoval = async () => {
+    if (!userPic) return;
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({
+          userPic: null,
+        })
+        .eq("userId", userId);
+      updateUser(userId, username, userEmail, userPassword);
+      if (error) throw error;
+      toast.success("Profile picture removed successfully.");
+    } catch (error) {
+      toast.error("Error removing profile picture.");
+    }
   };
 
   return (
@@ -34,8 +62,8 @@ const ProfileImage = ({ profileImage }: ProfileImageProps) => {
       <div className="relative inline-block h-24 w-24 rounded-full ring ring-persianGreen ring-offset-4 dark:ring-offset-richBlack overflow-hidden">
         <div style={{ position: "relative", width: "100%", height: "100%" }}>
           <Image
-            alt="background-image"
-            src={selectedImage}
+            alt={`${username.slice(0, 2).toUpperCase()}`}
+            src={userPic ? userPic : DEFAULT_AVATAR}
             className="object-cover w-full h-full"
             width={96}
             height={96}

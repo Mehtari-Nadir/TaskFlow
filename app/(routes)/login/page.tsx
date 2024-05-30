@@ -1,14 +1,11 @@
 "use client"
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import { z } from "zod";
 import formSchema from "./formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"
-
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -123,7 +120,7 @@ const LoginPage = () => {
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="**********"  {...field} />
+                                            <Input placeholder="Enter password"  {...field} />
                                         </FormControl>
                                         <FormDescription
                                             className="text-right font-bold text-c-one underline cursor-pointer"
@@ -171,6 +168,7 @@ const LoginPage = () => {
                         objectFit: "cover",
                     }}
                     sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px"
+                    priority
                 />
             </div>
             <Toaster richColors />

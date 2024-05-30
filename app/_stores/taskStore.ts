@@ -35,10 +35,11 @@ export const createTaskStore = (
         persist(
             (set) => ({
                 tasks: [...initState],
-                addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId?: string) => {
+                addTask: (columnId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority, taskId: string = uuidv4()) => {
                     set((state) => ({
-                        tasks: [...state.tasks, { taskId: taskId ?? uuidv4(), taskTitle, taskDescription, columnId, dueDate, priority }]
+                        tasks: [...state.tasks, { taskId, taskTitle, taskDescription, columnId, dueDate, priority }]
                     }));
+                    return taskId;
                 },
                 deleteTask: (taskId: string) => {
                     set((state) => ({
@@ -58,20 +59,30 @@ export const createTaskStore = (
                             .from("tasks")
                             .select("*")
                             .in("columnId", columnIds);
-                        
+
                         if (error) {
                             throw new Error(error.message);
                         }
 
-                        const fetchedTasks:TTask[] = tasks.map(task => ({
-                            taskId: task.taskId,
-                            taskDescription: task.taskDescription == null ? undefined : task.taskDescription,
-                            taskTitle: task.taskTitle,
-                            columnId: task.columnId,
-                            dueDate: task.dueDate == null ? undefined : task.dueDate,
-                        }))
+                        const fetchedTasks: TTask[] = tasks.map(
+                            ({
+                                taskId,
+                                taskTitle,
+                                taskDescription,
+                                dueDate,
+                                columnId,
+                                priority,
+                            }: TTask) => ({
+                                taskId,
+                                taskTitle,
+                                taskDescription: taskDescription || undefined,
+                                dueDate: dueDate ? new Date(dueDate) : undefined,
+                                columnId,
+                                priority: priority || undefined,
+                            })
+                        );
 
-                        set({tasks: fetchedTasks})
+                        set({ tasks: fetchedTasks })
 
                     } catch (error) {
                         console.log("error fetching tasks ", error);

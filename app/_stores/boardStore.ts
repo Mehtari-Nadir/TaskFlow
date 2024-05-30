@@ -29,10 +29,10 @@ export const createBoardStore = (
             (set) => ({
                 boards: [...initState],
                 searchTerm: '',
-                addBoard: (boardTitle: string, boardDescription?: string) => {
+                addBoard: (boardTitle: string, boardDescription?: string, boardColor?: string[]) => {
                     const newBoardId = uuidv4();
                     set((state) => ({
-                        boards: [...state.boards, { boardId: newBoardId, boardTitle, boardDescription }]
+                        boards: [...state.boards, { boardId: newBoardId, boardTitle, boardDescription, boardColor }]
                     }))
                     return newBoardId;
                 },
@@ -41,13 +41,11 @@ export const createBoardStore = (
                         boards: state.boards.filter(board => board.boardId !== boardId)
                     }))
                 },
-                editBoard: (boardId: string, boardTitle: string, boardDescription?: string) => {
-                    set(state => ({
-                        boards: state.boards.map((board) => {
-                            return board.boardId == boardId ? { ...board, boardTitle, boardDescription } : board;
-                        })
-                    }));
-                },
+                editBoard: (boardId: string, boardTitle: string, boardDescription?: string, boardColor?: string[]) => set(state => ({
+                    boards: state.boards.map((board) => {
+                        return board.boardId == boardId ? { ...board, boardTitle, boardDescription, boardColor } : board;
+                    })
+                })),
                 setSearchTerm: (term: string) => {
                     set(({
                         searchTerm: term
@@ -64,11 +62,14 @@ export const createBoardStore = (
                             throw new Error(error.message);
                         }
 
-                        const fetchedBoards: TBoard[] = boards.map(board => ({
-                            boardId: board.boardId,
-                            boardTitle: board.boardTitle,
-                            boardDescription: board.boardDescription
+                        const fetchedBoards: TBoard[] = boards.map(({ boardId, boardTitle, boardColor, boardDescription }: TBoard) => ({
+                            boardId: boardId,
+                            boardTitle: boardTitle,
+                            boardDescription: boardDescription || undefined,
+                            boardColor: boardColor || undefined,
                         }));
+                        console.log("fetchedBoards", fetchedBoards);
+
 
                         set({ boards: fetchedBoards });
 

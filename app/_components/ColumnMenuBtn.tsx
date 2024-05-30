@@ -12,13 +12,14 @@ import { useState } from "react";
 import AddTaskDialog from "./AddTaskDialog";
 import { toast } from "sonner";
 import { useColumnStore } from "../_providers/column-store-provider";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const ColumnMenuBtn = ({ columnId, columnTitle }: { columnId: string, columnTitle: string }) => {
 
     const [openColumnDialog, setColumnDialog] = useState(false);
     const [openTaskDialog, setTaskDialog] = useState(false);
-
     const deleteColumn = useColumnStore(actions => actions.deleteColumn);
+    const supabase = createClientComponentClient();
 
     return (
         <>
@@ -43,10 +44,19 @@ const ColumnMenuBtn = ({ columnId, columnTitle }: { columnId: string, columnTitl
                                 description: "All tasks in this column will be deleted.",
                                 action: {
                                     label: "Delete",
-                                    onClick: () => {
-                                        deleteColumn(columnId);
-                                    }
-                                },
+                                    onClick: async () => {
+                                        try {
+                                            deleteColumn(columnId);
+                                            const { error } = await supabase
+                                                .from('columns')
+                                                .delete()
+                                                .eq('columnId', columnId);
+                                            if (error) throw error;
+                                        } catch (error) {
+                                            toast.error("Error deleting column");
+                                        }
+                                    },
+                                }
                             })
                         }}
                     >

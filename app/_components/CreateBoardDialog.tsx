@@ -1,5 +1,4 @@
 "use client"
-
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -18,47 +17,84 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea"
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"
-
 import { useBoardStore } from "../_providers/board-store-provider";
 import { useUserStore } from "../_providers/user-store-provider";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { BoardColors } from "./colors";
 
 const createBoardFormSchema = z.object({
-    boardName: z.string().min(2, { message: "The board name must be at least 2 characters long." }).max(25, { message: "The board name must be no more than 25 characters long." }),
-    boardDescription: z.string().max(255, { message: "The board description must be no more than 255 characters long." }).optional(),
+    boardName: z
+        .string()
+        .min(2, { message: "The board name must be at least 2 characters long." })
+        .max(25, { message: "The board name must be no more than 25 characters long." }),
+    boardDescription: z
+        .string()
+        .max(255, { message: "The board description must be no more than 255 characters long." })
+        .optional(),
+    boardColor: z.enum(["color1", "color2", "color3", "color4", "color5"], {
+        required_error: "No color selected.",
+    }),
 });
 
-const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+type CreateBoardForm = z.infer<typeof createBoardFormSchema>;
 
+const ColorPicker = ({
+    onChange,
+    defaultValue,
+}: {
+    onChange: (event: any) => void;
+    defaultValue: string;
+}) => {
+    return (
+        <RadioGroup onValueChange={onChange} defaultValue={defaultValue} className="flex flex-wrap">
+            {Object.entries(BoardColors).map(([colorGroup, colors]) => (
+                <RadioGroupItem
+                    key={colorGroup}
+                    className={`size-8 shadow-sm`}
+                    style={{ backgroundImage: `linear-gradient(to right, ${colors.join(",")})` }}
+                    value={colorGroup}
+                />
+            ))}
+        </RadioGroup>
+    );
+};
+
+const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const addBoard = useBoardStore(actions => actions.addBoard);
     const user = useUserStore(state => state.users);
-
     const supabase = createClientComponentClient();
-
-    const form = useForm<z.infer<typeof createBoardFormSchema>>({
+    const form = useForm<CreateBoardForm>({
         resolver: zodResolver(createBoardFormSchema),
         defaultValues: {
             boardName: "",
-            boardDescription: ""
+            boardDescription: "",
+            boardColor: "color1",
         },
     })
-
-    async function onSubmit(values: z.infer<typeof createBoardFormSchema>) {
-        const boardId = addBoard(values.boardName, values.boardDescription);
-        const { data, error } = await supabase
-            .from("boards")
-            .insert([{
-                boardId: boardId,
-                boardTitle: values.boardName,
-                boardDescription: values.boardDescription,
-                userId: user[0].userId
-            }])
-        form.reset();
-        setOpen(false);
+    const onSubmit = async ({ boardName, boardDescription, boardColor }: CreateBoardForm) => {
+        try {
+            const boardId = addBoard(boardName, boardDescription, BoardColors[boardColor]);
+            const { error } = await supabase
+                .from("boards")
+                .insert([{
+                    boardId,
+                    boardTitle: boardName,
+                    boardDescription: boardDescription || null,
+                    userId: user[0].userId,
+                    boardColor: BoardColors[boardColor] || null,
+                }])
+            if (error) throw error;
+        } catch (error) {
+            toast.error("Error creating board. Please try again.");
+        } finally {
+            form.reset();
+            setOpen(false);
+        }
     }
 
     return (
@@ -96,6 +132,25 @@ const CreateBoardButton = ({ open, setOpen }: { open: boolean, setOpen: React.Di
                                             placeholder="This board is dedicated to managing the design tasks for our e-commerce...."
                                             {...field}
                                         />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="boardColor"
+                            render={({ field }) => (
+                                <FormItem className="space-y-3">
+                                    <FormLabel>Board Color</FormLabel>
+                                    <FormControl>
+                                        <RadioGroup
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                            className="flex"
+                                        >
+                                            <ColorPicker onChange={field.onChange} defaultValue={field.value} />
+                                        </RadioGroup>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

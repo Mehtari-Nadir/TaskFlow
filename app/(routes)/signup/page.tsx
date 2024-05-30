@@ -70,12 +70,12 @@ const SignupPage = () => {
     });
 
     const { data: response, error } = await supabase.from("users")
-    .insert([{
-      userId: result.data.user?.id,
-      username: data.username,
-      userEmail: data.email,
-      userPassword: data.password
-    }]);
+      .insert([{
+        userId: result.data.user?.id,
+        username: data.username,
+        userEmail: data.email,
+        userPassword: data.password
+      }]);
   };
 
   return (
@@ -194,6 +194,7 @@ const SignupPage = () => {
             objectFit: "cover",
           }}
           sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px"
+          priority
         />
       </div>
       <Toaster richColors />

@@ -28,14 +28,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-
-import { z } from "zod"
+import { cn } from "@/lib/utils"; import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { format } from "date-fns";
 import { useTaskStore } from "../_providers/task-store-provider"
 import { useMemo } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "sonner";
 
 enum Priority {
     High = 'High',
@@ -52,7 +52,8 @@ const editTaskSchema = z.object({
         .optional(),
     dueDate: z.date().optional(),
     priority: z.nativeEnum(Priority).optional(),
-})
+});
+type editTaskForm = z.infer<typeof editTaskSchema>;
 
 const EditTaskDialog = (
     {
@@ -65,27 +66,40 @@ const EditTaskDialog = (
         taskId: string,
     }
 ) => {
-
     const editTask = useTaskStore(actions => actions.editTask);
     const tasks = useTaskStore(state => state.tasks);
+    const supabase = createClientComponentClient();
     const currentTask = useMemo(() => {
         return tasks.filter(task => task.taskId == taskId);
     }, [taskId, tasks]);
-
-    const form = useForm<z.infer<typeof editTaskSchema>>({
+    const form = useForm<editTaskForm>({
         resolver: zodResolver(editTaskSchema),
         defaultValues: {
             taskTitle: currentTask[0]?.taskTitle,
             taskDescription: currentTask[0]?.taskDescription,
-            dueDate: currentTask[0]?.dueDate,
-            priority: currentTask[0]?.priority
+            dueDate: currentTask[0]?.dueDate ? new Date(currentTask[0]?.dueDate) : undefined,
+            priority: currentTask[0]?.priority,
         },
     })
-
-    function onSubmit(values: z.infer<typeof editTaskSchema>) {
-        editTask(taskId, values.taskTitle, values.taskDescription, values.dueDate, values.priority);
-        form.reset();
-        setTaskDialog(false);
+    const onSubmit = async ({ taskTitle, dueDate, priority, taskDescription }: editTaskForm) => {
+        try {
+            editTask(taskId, taskTitle, taskDescription, dueDate, priority);
+            const { error } = await supabase
+                .from("tasks")
+                .update({
+                    taskTitle,
+                    taskDescription: taskDescription || null,
+                    dueDate: dueDate || null,
+                    priority: priority ? Priority[priority] : null,
+                })
+                .eq("taskId", taskId);
+            if (error) throw error;
+        } catch (error) {
+            toast.error("An error occurred while updating the task. Please try again.");
+        } finally {
+            form.reset();
+            setTaskDialog(false);
+        }
     }
 
     return (
@@ -181,7 +195,6 @@ const EditTaskDialog = (
                                             <SelectItem value={Priority.Low}>Low</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    {/* <FormDescription>Keep Descriptions Brief</FormDescription> */}
                                     <FormMessage />
                                 </FormItem>
                             )}

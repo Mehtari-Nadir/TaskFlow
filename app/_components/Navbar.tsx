@@ -1,13 +1,15 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import TaskFlowLogo from "/public/assets/taskflow-logo.svg";
 import ProfileAvatar from "./ProfileAvatar";
 import NavbarMenu from "./NavbarMenu";
 import CreateBoardBtn from "./CreateBoardBtn";
+import { useUserStore } from "../_providers/user-store-provider";
 
 const Navbar = () => {
+    const user = useUserStore(state => state.users[0]);
+
     return (
         <nav className="w-full flex items-center justify-between py-3 px-5 border-b-[1px]">
             <div className="flex items-center gap-x-8">
@@ -20,11 +22,13 @@ const Navbar = () => {
                         </div>
                     </div>
                 </Link>
-                <NavbarMenu />
-                <CreateBoardBtn />
+                <div className="flex gap-3">
+                    <NavbarMenu />
+                    <CreateBoardBtn />
+                </div>
             </div>
             <div className="flex items-center gap-x-5">
-                <ProfileAvatar image_url="https://github.com/shadcn.png" />
+                <ProfileAvatar {...user} />
             </div>
         </nav>
     )

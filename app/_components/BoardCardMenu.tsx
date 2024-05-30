@@ -47,11 +47,16 @@ const BoardCardMenu = (
                                 action: {
                                     label: "Delete",
                                     onClick: async () => {
-                                        deleteBoard(boardId);
-                                        const { data, error } = await supabase
-                                            .from("boards")
-                                            .delete()
-                                            .eq("boardId", boardId)
+                                        try {
+                                            deleteBoard(boardId);
+                                            const { error } = await supabase
+                                                .from('boards')
+                                                .delete()
+                                                .eq('boardId', boardId);
+                                            if (error) throw error;
+                                        } catch (error) {
+                                            toast.error("Error deleting board");
+                                        }
                                     }
                                 },
                             })
