@@ -4,12 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { persist } from "zustand/middleware";
 
 export const initColumnStore = (): TColumn[] => {
-    return [
-        // { columnId: "c-0", columnTitle: "Backlogs", boardId: "b-0" },
-        // { columnId: "c-1", columnTitle: "Testing", boardId: "b-0" },
-
-        // { columnId: "c-2", columnTitle: "Review", boardId: "b-2" },
-    ];
+    return [];
 }
 
 const supabase = createClientComponentClient();

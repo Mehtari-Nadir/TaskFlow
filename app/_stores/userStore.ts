@@ -3,9 +3,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { persist } from "zustand/middleware";
 
 export const initUserStore = (): TUser[] => {
-    return [
-        // { userId: "u-0", username: "Nadir", userEmail: "nadir@gmail.com", userPassword: "Nadir45!" },
-    ]
+    return []
 }
 
 const defaultInitialState: TUser[] = [];

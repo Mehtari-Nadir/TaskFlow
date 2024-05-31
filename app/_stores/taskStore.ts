@@ -4,24 +4,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { persist } from "zustand/middleware";
 
 export const initTaskStore = (): TTask[] => {
-    return [
-        // {
-        //     taskId: "t-0",
-        //     columnId: "c-0",
-        //     taskTitle: "Impl Design",
-        //     taskDescription: "use figma",
-        //     // dueDate: null,
-        //     // priority: null
-        // },
-        // {
-        //     taskId: "t-1",
-        //     columnId: "c-2",
-        //     taskTitle: "Fix Ai",
-        //     taskDescription: "use next ai sdk",
-        //     // dueDate: null,
-        //     // priority: null
-        // }
-    ];
+    return [];
 }
 
 const supabase = createClientComponentClient();

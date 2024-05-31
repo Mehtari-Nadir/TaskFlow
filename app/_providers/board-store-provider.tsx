@@ -5,7 +5,6 @@ import { type StoreApi, useStore } from 'zustand'
 import { createBoardStore, initBoardStore } from '../_stores/boardStore';
 import { useState, useEffect } from 'react';
 
-// ! If there is an error will be the type down here
 export const BoardStoreContext = createContext<StoreApi<TBoardStore> | null>(
     null,
 )
@@ -21,7 +20,6 @@ export const BoardStoreProvider = ({
     const [isMounted, setIsMounted] = useState(false);
 
     if (!storeRef.current) {
-        // storeRef.current = useBoardStore(initBoardStore())
         storeRef.current = createBoardStore(initBoardStore())
     }
 

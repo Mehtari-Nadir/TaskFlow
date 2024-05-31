@@ -4,17 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export const initBoardStore = (): TBoard[] => {
-    return [
-        // { boardId: 'b-0', boardTitle: "TaskFlow", boardDescription: "test board one" },
-        // { boardId: 'b-1', boardTitle: "StackIntech", boardDescription: "test board two" },
-
-        // { boardId: 'b-2', boardTitle: "University", boardDescription: "test board three" },
-        // {
-        //     boardDescription:"this is  description",
-        //     boardId:"0639240a-5a31-4f42-8ee3-9221c2bb2432",
-        //     boardTitle:"Test Board"
-        // }
-    ];
+    return [];
 }
 
 const supabase = createClientComponentClient();
@@ -68,8 +58,6 @@ export const createBoardStore = (
                             boardDescription: boardDescription || undefined,
                             boardColor: boardColor || undefined,
                         }));
-                        console.log("fetchedBoards", fetchedBoards);
-
 
                         set({ boards: fetchedBoards });
 

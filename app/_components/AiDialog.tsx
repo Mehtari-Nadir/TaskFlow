@@ -61,7 +61,7 @@ type PromptResultIds = {
 };
 
 const getData = async () => {
-  const token = "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";
+  const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN!;
   const owner = "Mehtari-Nadir";
   const repo = "system-prompt";
   const path = "system-prompt.txt";
@@ -130,7 +130,7 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
   });
   const supabase = createClientComponentClient();
   const genAI = new GoogleGenerativeAI(
-    "AIzaSyBUgNqU1qSH1DJe2lX-mQQMzzSpRWpX0mw",
+    process.env.NEXT_PUBLIC_AI_KEY!,
   );
   const generationConfig = {
     temperature: 1,
@@ -158,20 +158,13 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
     },
   ];
   const parseData = (data: string) => {
-    console.log("\n%cDATA:\n", "color: lightblue; font-weight: bold", data);
+    
     const formattedData = data.startsWith("[")
       ? `{${data.replace(/^\s*\[\s*(\{[^]*?\})\s*\]\s*,?\s*\[\s*(\{[^]*?\})\s*\]\s*$/g, '"tasks":[$1], "columns":[$2]')}}`
       : !data.startsWith("{")
         ? `{${data.replace(/(\b\w+\b)(?=: \[|\: \{|\: ")/g, '"$1"')}}`
         : data;
-    console.log(
-      "\n%cFORMATTED-DATA:\n",
-      "color: lightblue; font-weight: bold",
-      formattedData,
-    );
     try {
-      console.log("%cPARSED-DATA:", "color: lightblue; font-weight: bold");
-      console.table(JSON.parse(formattedData));
       return JSON.parse(formattedData);
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
@@ -278,19 +271,6 @@ const AiDialog = ({ open, setOpen, boardId }: AiDialogProps) => {
       form.reset();
     }
   };
-  console.log("%cSTORE-COLUMNS:", "color: lightblue; font-weight: bold");
-  console.table(
-    columns.map(({ columnId, columnTitle }) => ({ columnId, columnTitle })),
-  );
-
-  console.log("%cSTORE-TASKS:", "color: lightblue; font-weight: bold");
-  console.table(
-    tasks.map(({ columnId, taskId, taskTitle }) => ({
-      columnId,
-      taskId,
-      taskTitle,
-    })),
-  );
   return (
     <Dialog open={open} onOpenChange={isPending ? () => {} : setOpen}>
       <DialogContent>
