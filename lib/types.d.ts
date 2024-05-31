@@ -39,6 +39,8 @@ type TTaskActions = {
     deleteTask: (taskId: string) => void;
     editTask: (taskId: string, taskTitle: string, taskDescription?: string, dueDate?: Date, priority?: Priority) => void;
     fetchTasks: (columnIds: string[]) => void;
+    setDraggedTask: (taskId: string | null) => void;
+    updateTask: (taskId: string, columnId: string) => Promise<void>;
 }
 
 type TColumnActions = {
@@ -70,6 +72,7 @@ type TUserState = {
 
 type TTaskState = {
     tasks: TTask[];
+    draggedTask: string | null;
 }
 
 type TColumnState = {
