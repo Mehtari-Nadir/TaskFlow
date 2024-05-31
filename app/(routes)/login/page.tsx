@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator"
-import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -122,11 +121,6 @@ const LoginPage = () => {
                                         <FormControl>
                                             <Input placeholder="Enter password"  {...field} />
                                         </FormControl>
-                                        <FormDescription
-                                            className="text-right font-bold text-c-one underline cursor-pointer"
-                                        >
-                                            Forget Password?
-                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -142,12 +136,6 @@ const LoginPage = () => {
                             <Separator />
                         </form>
                     </Form>
-                    <Button
-                        className="mt-5 w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
-                    >
-                        <FcGoogle className="mr-2 h-4 w-4" />
-                        Or sign up with google
-                    </Button>
                     <div className="text-sm mt-3">
                         Don&apos;t have an account?
                         <Link

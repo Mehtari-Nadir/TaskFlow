@@ -17,7 +17,6 @@ import Link from "next/link";
 import Image from "next/image";
 import TaskFlowLogo from "/public/assets/taskflow-logo.svg";
 import Background from "/public/assets/auth-bg.jpg";
-import { FcGoogle } from "react-icons/fc";
 import { SignupSchema, SignupFields } from "./signupValidationSchema";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
@@ -156,7 +155,7 @@ const SignupPage = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex px-4 py-2 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
+                className="w-full flex px-4 py-3 bg-persianGreen text-black font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-persianGreen"
               >
                 {isLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                 Sign up
@@ -164,12 +163,6 @@ const SignupPage = () => {
               <Separator />
             </form>
           </Form>
-          <Button
-            className="mt-3 w-full flex px-4 py-2 bg-white dark:bg-white hover:bg-white hover:dark:bg-white text-black font-bold transition duration-200 border-2 border-transparent hover:border-persianGreen"
-          >
-            <FcGoogle className="mr-2 h-4 w-4" />
-            Or sign up with google
-          </Button>
           <div className="pb-4 text-sm mt-3">
             Already have an account?
             <Link
